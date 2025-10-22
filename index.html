@@ -1,32 +1,73 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IQ & Konzentrationstrainer</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IQ & Konzentrationstrainer App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {font-family: Arial, sans-serif; background:#0b1c16; color:#f4f7f5; margin:0; padding:0;}
-    header {background:#0d3b2a; color:#fff; padding:1rem; text-align:center;}
-    main {max-width:900px; margin:2rem auto; background:#10241c; padding:2rem; border-radius:10px;}
-    button {padding:.6rem 1rem; border:none; border-radius:8px; cursor:pointer; background:#146c43; color:white; font-weight:bold;}
-    .question {margin-top:1rem; background:#0f2a22; padding:1rem; border-radius:10px;}
-    .archive {margin-top:2rem;}
-    .hidden {display:none;}
+    :root{
+      --bg:#0b1c16;--card:#122b21;--accent:#50fa7b;--accent2:#00b894;--text:#f4f7f5;--muted:#b7c2bd;--header:#0d3b2a;--btn:#19c37d;--shadow:rgba(0,0,0,0.35);
+    }
+    *{box-sizing:border-box;transition:all 0.3s ease;}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;}
+    header{background:linear-gradient(135deg,#0d3b2a,#1e5640);padding:2.5rem 1rem;text-align:center;box-shadow:0 5px 20px var(--shadow);}
+    header h1{margin:0;font-size:2.3rem;letter-spacing:1px;}
+    header p{color:var(--muted);font-size:1.1rem;}
+    main{max-width:960px;margin:2rem auto;padding:2rem;background:var(--card);border-radius:18px;box-shadow:0 8px 30px var(--shadow);}
+    h2{color:var(--accent);margin-bottom:0.8rem;text-align:center;}
+    .question{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:1.5rem;margin:1rem 0;box-shadow:0 0 15px rgba(0,0,0,0.2);animation:fadeIn 0.5s ease-in-out;}
+    button{padding:0.7rem 1.2rem;margin:0.3rem;border:none;border-radius:10px;cursor:pointer;background:linear-gradient(135deg,#19c37d,#00b894);color:#fff;font-weight:600;font-size:1rem;box-shadow:0 4px 12px rgba(25,195,125,0.4);}
+    button:hover{transform:scale(1.05);box-shadow:0 6px 15px rgba(25,195,125,0.6);}
+    footer{text-align:center;padding:1.2rem;background:#0d3b2a;color:var(--muted);margin-top:3rem;font-size:0.9rem;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+    .tab-buttons{text-align:center;margin-bottom:2rem;}
+    .tab-buttons button{margin:0.5rem;}
+    .hidden{display:none;}
   </style>
 </head>
 <body>
   <header>
-    <h1>Daily IQ & Konzentrationstrainer</h1>
-    <p>Trainiere dein Gehirn täglich mit neuen Fragen!</p>
+    <h1>IQ & Konzentrationstrainer</h1>
+    <p>Trainiere deine Intelligenz und Konzentration täglich – modern, klar & motivierend.</p>
   </header>
+
   <main>
-    <div id="quiz"></div>
-    <button id="nextBtn">Nächste Frage</button>
-    <div class="archive">
-      <h2>Fragenarchiv</h2>
-      <ul id="archiveList"></ul>
+    <div class="tab-buttons">
+      <button onclick="showTab('iqTest')">IQ-Test</button>
+      <button onclick="showTab('focusTest')">Konzentrationstest</button>
+      <button onclick="showTab('top50')">Top 50 IQ-Ergebnisse</button>
     </div>
+
+    <section id="iqTest">
+      <h2>Dein heutiger IQ‑Test</h2>
+      <div id="quizBox" class="question"></div>
+      <div style="text-align:center;margin-top:1rem;">
+        <button id="nextBtn">Nächste Frage</button>
+        <button id="resetBtn">Neu starten</button>
+      </div>
+      <div id="result" style="text-align:center;margin-top:2rem;font-size:1.2rem;color:var(--accent);"></div>
+    </section>
+
+    <section id="focusTest" class="hidden">
+      <h2>Konzentrationstest</h2>
+      <p style="text-align:center;color:var(--muted);">Drücke so schnell wie möglich, wenn ein grüner Kreis erscheint!</p>
+      <div id="focusArea" style="height:200px;display:flex;align-items:center;justify-content:center;">
+        <div id="circle" style="width:100px;height:100px;border-radius:50%;background:red;"></div>
+      </div>
+      <p id="focusResult" style="text-align:center;margin-top:1rem;font-size:1.1rem;"></p>
+    </section>
+
+    <section id="top50" class="hidden">
+      <h2>Top 50 IQ-Ergebnisse</h2>
+      <ul id="topList" style="list-style:none;padding:0;text-align:center;"></ul>
+    </section>
   </main>
+
+  <footer>
+    &copy; 2025 IQ & Konzentrationstrainer – Dein tägliches Gehirntraining.
+  </footer>
+
   <script>
     const questions = [
       {q:'Welche Zahl folgt in der Reihe? 2, 4, 8, 16, ?', a:['18','24','32','34'], c:2},
@@ -37,35 +78,77 @@
     ];
 
     let index = 0;
-    let archive = JSON.parse(localStorage.getItem('iq_archive') || '[]');
+    let score = 0;
+    let results = JSON.parse(localStorage.getItem('iq_results') || '[]');
 
     function renderQuestion() {
-      const quiz = document.getElementById('quiz');
-      const q = questions[index % questions.length];
-      quiz.innerHTML = `<div class='question'><h3>${q.q}</h3>${q.a.map((ans,i)=>`<p><button onclick='answer(${i})'>${ans}</button></p>`).join('')}</div>`;
+      if(index >= questions.length){ endTest(); return; }
+      const quiz = document.getElementById('quizBox');
+      const q = questions[index];
+      quiz.innerHTML = `<h3>${q.q}</h3>` + q.a.map((ans,i)=>`<button data-ans="${i}" class="answerBtn">${ans}</button>`).join(' ');
+      quiz.querySelectorAll('.answerBtn').forEach(btn=> btn.addEventListener('click',()=> answer(Number(btn.dataset.ans))));
     }
 
     function answer(i){
-      const q = questions[index % questions.length];
+      const q = questions[index];
       const correct = i===q.c;
-      alert(correct ? 'Richtig!' : 'Falsch!');
-      archive.push({frage:q.q, richtig:correct, zeit:new Date().toLocaleString()});
-      localStorage.setItem('iq_archive', JSON.stringify(archive));
-      renderArchive();
-    }
-
-    function renderArchive(){
-      const list = document.getElementById('archiveList');
-      list.innerHTML = archive.map(x=>`<li>${x.frage} — ${x.richtig ? '✅' : '❌'} (${x.zeit})</li>`).join('');
-    }
-
-    document.getElementById('nextBtn').addEventListener('click',()=>{
+      if(correct) score++;
       index++;
       renderQuestion();
+    }
+
+    function endTest(){
+      const iq = Math.round(85 + (score / questions.length) * 60);
+      document.getElementById('result').innerHTML = `Dein IQ liegt bei <strong>${iq}</strong> Punkten.`;
+      results.push({iq, datum:new Date().toLocaleString()});
+      results.sort((a,b)=>b.iq - a.iq);
+      results = results.slice(0,50);
+      localStorage.setItem('iq_results', JSON.stringify(results));
+      renderTopList();
+    }
+
+    function renderTopList(){
+      const list = document.getElementById('topList');
+      list.innerHTML = results.map((r,i)=>`<li>${i+1}. IQ: <strong>${r.iq}</strong> – ${r.datum}</li>`).join('');
+    }
+
+    function showTab(tab){
+      document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+      document.getElementById(tab).classList.remove('hidden');
+    }
+
+    // Konzentrationstest Logik
+    const circle = document.getElementById('circle');
+    const focusResult = document.getElementById('focusResult');
+    let startTime, timeout;
+
+    circle.addEventListener('click',()=>{
+      if(circle.style.background==='green'){
+        const reaction = Date.now() - startTime;
+        focusResult.textContent = `Reaktionszeit: ${reaction} ms`;
+        circle.style.background='red';
+        clearTimeout(timeout);
+        startFocusTest();
+      } else {
+        focusResult.textContent = 'Zu früh! Warte auf Grün!';
+      }
     });
 
+    function startFocusTest(){
+      focusResult.textContent = 'Bereit...';
+      timeout = setTimeout(()=>{
+        circle.style.background='green';
+        startTime = Date.now();
+      }, Math.random()*3000 + 2000);
+    }
+
+    document.getElementById('nextBtn').addEventListener('click',()=> renderQuestion());
+    document.getElementById('resetBtn').addEventListener('click',()=>{index=0;score=0;renderQuestion();document.getElementById('result').innerHTML='';});
+
     renderQuestion();
-    renderArchive();
+    renderTopList();
+    startFocusTest();
   </script>
 </body>
 </html>
+
