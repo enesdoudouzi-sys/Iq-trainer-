@@ -3,151 +3,116 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IQ & Konzentrationstrainer App</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <title>Daily IQ & Focus Trainer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0b1c16;--card:#122b21;--accent:#50fa7b;--accent2:#00b894;--text:#f4f7f5;--muted:#b7c2bd;--header:#0d3b2a;--btn:#19c37d;--shadow:rgba(0,0,0,0.35);
+      --bg:#050505;--accent:#00ffcc;--accent2:#00c3ff;--text:#f0f0f0;--muted:#888;
     }
     *{box-sizing:border-box;transition:all 0.3s ease;}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;}
-    header{background:linear-gradient(135deg,#0d3b2a,#1e5640);padding:2.5rem 1rem;text-align:center;box-shadow:0 5px 20px var(--shadow);}
-    header h1{margin:0;font-size:2.3rem;letter-spacing:1px;}
-    header p{color:var(--muted);font-size:1.1rem;}
-    main{max-width:960px;margin:2rem auto;padding:2rem;background:var(--card);border-radius:18px;box-shadow:0 8px 30px var(--shadow);}
-    h2{color:var(--accent);margin-bottom:0.8rem;text-align:center;}
-    .question{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:1.5rem;margin:1rem 0;box-shadow:0 0 15px rgba(0,0,0,0.2);animation:fadeIn 0.5s ease-in-out;}
-    button{padding:0.7rem 1.2rem;margin:0.3rem;border:none;border-radius:10px;cursor:pointer;background:linear-gradient(135deg,#19c37d,#00b894);color:#fff;font-weight:600;font-size:1rem;box-shadow:0 4px 12px rgba(25,195,125,0.4);}
-    button:hover{transform:scale(1.05);box-shadow:0 6px 15px rgba(25,195,125,0.6);}
-    footer{text-align:center;padding:1.2rem;background:#0d3b2a;color:var(--muted);margin-top:3rem;font-size:0.9rem;}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-    .tab-buttons{text-align:center;margin-bottom:2rem;}
-    .tab-buttons button{margin:0.5rem;}
+    body{margin:0;background:radial-gradient(circle at top,#0a0a0a,#000);color:var(--text);font-family:'Roboto',sans-serif;overflow-x:hidden;}
+    header{padding:3rem 1rem;text-align:center;}
+    header h1{margin:0;font-size:2.8rem;text-transform:uppercase;font-family:'Orbitron',sans-serif;letter-spacing:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:glow 3s ease-in-out infinite alternate;}
+    header p{color:var(--muted);font-size:1.1rem;margin-top:0.8rem;max-width:720px;margin:auto;}
+    @keyframes glow{from{text-shadow:0 0 10px var(--accent);}to{text-shadow:0 0 25px var(--accent2);}}
+    main{max-width:900px;margin:3rem auto;padding:2.5rem;background:rgba(15,15,15,0.85);border-radius:20px;backdrop-filter:blur(10px);box-shadow:0 0 25px rgba(0,255,200,0.3);}
+    h2{text-align:center;color:var(--accent);font-family:'Orbitron',sans-serif;}
+    .tab-buttons{display:flex;justify-content:center;flex-wrap:wrap;gap:1rem;margin-bottom:2rem;}
+    .tab-buttons button{padding:0.8rem 1.4rem;border:none;border-radius:30px;cursor:pointer;background:linear-gradient(90deg,var(--accent2),var(--accent));color:#000;font-weight:600;font-family:'Orbitron';box-shadow:0 0 10px rgba(0,255,200,0.3);}
+    .tab-buttons button:hover{transform:scale(1.08);box-shadow:0 0 20px rgba(0,255,200,0.6);}
+    .question{background:rgba(255,255,255,0.05);border:1px solid rgba(0,255,200,0.15);border-radius:16px;padding:1.4rem;margin:1rem 0;}
+    button.option{padding:0.6rem 1.2rem;margin:0.3rem;border:none;border-radius:12px;cursor:pointer;background:linear-gradient(90deg,var(--accent2),var(--accent));color:#000;font-weight:600;}
+    button.option:hover{transform:scale(1.07);}
+    #circle{box-shadow:0 0 30px rgba(0,255,200,0.2);transition:background 0.2s ease,box-shadow 0.3s ease;}
+    footer{text-align:center;padding:1.5rem 1rem;color:var(--muted);font-size:0.85rem;margin-top:4rem;}
     .hidden{display:none;}
+    /* Ladebildschirm */
+    #loader{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;animation:fadeOut 1s ease 3s forwards;}
+    #loader img{width:120px;height:120px;object-fit:contain;filter:drop-shadow(0 0 15px var(--accent));animation:pulse 2s infinite alternate;}
+    #loader p{color:var(--muted);font-family:'Roboto';margin-top:1rem;}
+    @keyframes pulse{from{opacity:0.6;transform:scale(1);}to{opacity:1;transform:scale(1.1);}}
+    @keyframes fadeOut{to{opacity:0;visibility:hidden;}}
   </style>
 </head>
 <body>
+  <!-- Ladebildschirm mit Logo -->
+  <div id="loader">
+    <img src="logo.png" alt="App Logo" />
+    <p>Wird geladen...</p>
+  </div>
+
   <header>
-    <h1>IQ & Konzentrationstrainer</h1>
-    <p>Trainiere deine Intelligenz und Konzentration täglich – modern, klar & motivierend.</p>
+    <h1>Daily IQ & Focus Trainer</h1>
+    <p>Trainiere deine Intelligenz, Reaktionsgeschwindigkeit und mentale Stärke – mit einem futuristischen Neon‑Design.</p>
   </header>
 
   <main>
     <div class="tab-buttons">
-      <button onclick="showTab('iqTest')">IQ-Test</button>
-      <button onclick="showTab('focusTest')">Konzentrationstest</button>
-      <button onclick="showTab('top50')">Top 50 IQ-Ergebnisse</button>
+      <button data-tab="iqTest">IQ‑Test</button>
+      <button data-tab="focusTest">Reaktionstest</button>
+      <button data-tab="psyTest">Psyche‑Analyse</button>
     </div>
 
     <section id="iqTest">
-      <h2>Dein heutiger IQ‑Test</h2>
-      <div id="quizBox" class="question"></div>
-      <div style="text-align:center;margin-top:1rem;">
-        <button id="nextBtn">Nächste Frage</button>
-        <button id="resetBtn">Neu starten</button>
-      </div>
-      <div id="result" style="text-align:center;margin-top:2rem;font-size:1.2rem;color:var(--accent);"></div>
+      <h2>IQ‑Test</h2>
+      <div style="text-align:center;"><button id="btnStartIQ" class="option">Start</button></div>
+      <div id="iqBox" class="question"></div>
+      <div id="iqResult" style="text-align:center;margin-top:1rem;font-size:1.3rem;color:var(--accent);"></div>
     </section>
 
     <section id="focusTest" class="hidden">
-      <h2>Konzentrationstest</h2>
-      <p style="text-align:center;color:var(--muted);">Drücke so schnell wie möglich, wenn ein grüner Kreis erscheint!</p>
-      <div id="focusArea" style="height:200px;display:flex;align-items:center;justify-content:center;">
-        <div id="circle" style="width:100px;height:100px;border-radius:50%;background:red;"></div>
+      <h2>Konzentration & Reaktionszeit</h2>
+      <p style="text-align:center;color:var(--muted);">Klicke so schnell wie möglich, wenn der Kreis <span style="color:var(--accent);">grün</span> wird!</p>
+      <div style="display:flex;justify-content:center;align-items:center;height:220px;">
+        <div id="circle" style="width:110px;height:110px;border-radius:50%;background:red;"></div>
       </div>
-      <p id="focusResult" style="text-align:center;margin-top:1rem;font-size:1.1rem;"></p>
+      <p id="reactionResult" style="text-align:center;margin-top:1rem;"></p>
+      <p id="averageResult" style="text-align:center;color:var(--muted);"></p>
     </section>
 
-    <section id="top50" class="hidden">
-      <h2>Top 50 IQ-Ergebnisse</h2>
-      <ul id="topList" style="list-style:none;padding:0;text-align:center;"></ul>
+    <section id="psyTest" class="hidden">
+      <h2>Psychologische Tests</h2>
+      <div style="text-align:center;margin-bottom:1rem;">
+        <button class="psyStart option" data-type="stress">Stress</button>
+        <button class="psyStart option" data-type="emotion">Emotion</button>
+      </div>
+      <div id="psyBox" class="question"></div>
+      <div id="psyResult" style="text-align:center;margin-top:1rem;font-size:1.1rem;"></div>
     </section>
   </main>
 
-  <footer>
-    &copy; 2025 IQ & Konzentrationstrainer – Dein tägliches Gehirntraining.
-  </footer>
+  <footer>© 2025 Daily IQ & Focus Trainer | Futuristic Edition – Bleib mental stark.</footer>
 
   <script>
-    const questions = [
-      {q:'Welche Zahl folgt in der Reihe? 2, 4, 8, 16, ?', a:['18','24','32','34'], c:2},
-      {q:'Was gehört nicht in die Reihe? Katze, Hund, Auto, Maus', a:['Katze','Hund','Auto','Maus'], c:2},
-      {q:'Welches Wort ist ein Synonym für „rasch“?', a:['langsam','schnell','spät','trüb'], c:1},
-      {q:'Wähle die korrekte Fortsetzung: A, C, E, G, ?', a:['H','I','J','K'], c:1},
-      {q:'Wenn alle Rosen Blumen sind und einige Blumen schnell welken, was folgt?', a:['Alle Rosen welken schnell','Einige Rosen welken schnell','Keine Rosen welken schnell','Unbekannt'], c:3}
-    ];
+    // Ladebildschirm entfernen
+    window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').style.display='none';},3500);});
 
-    let index = 0;
-    let score = 0;
-    let results = JSON.parse(localStorage.getItem('iq_results') || '[]');
+    function showTab(tab){document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));document.getElementById(tab).classList.remove('hidden');}
+    document.querySelectorAll('.tab-buttons button').forEach(btn=>btn.addEventListener('click',()=>showTab(btn.dataset.tab)));
 
-    function renderQuestion() {
-      if(index >= questions.length){ endTest(); return; }
-      const quiz = document.getElementById('quizBox');
-      const q = questions[index];
-      quiz.innerHTML = `<h3>${q.q}</h3>` + q.a.map((ans,i)=>`<button data-ans="${i}" class="answerBtn">${ans}</button>`).join(' ');
-      quiz.querySelectorAll('.answerBtn').forEach(btn=> btn.addEventListener('click',()=> answer(Number(btn.dataset.ans))));
-    }
+    // IQ TEST
+    const questions=[{q:'Welche Zahl folgt in der Reihe? 2,4,8,16,?',a:['18','24','32','34'],c:2},{q:'Synonym für „rasch“?',a:['langsam','schnell','spät','träge'],c:1}];
+    let iqIndex=0,score=0;
 
-    function answer(i){
-      const q = questions[index];
-      const correct = i===q.c;
-      if(correct) score++;
-      index++;
-      renderQuestion();
-    }
+    function startIQTest(){iqIndex=0;score=0;renderIQ();}
+    function renderIQ(){const box=document.getElementById('iqBox');if(iqIndex>=questions.length){const iq=Math.round(85+(score/questions.length)*60);document.getElementById('iqResult').innerHTML=`Dein IQ: <strong>${iq}</strong>`;return;}const q=questions[iqIndex];box.innerHTML=`<h3>${q.q}</h3>`+q.a.map((ans,i)=>`<button class='option' onclick='checkIQ(${i})'>${ans}</button>`).join('');}
+    function checkIQ(i){if(i===questions[iqIndex].c)score++;iqIndex++;renderIQ();}
+    document.getElementById('btnStartIQ').addEventListener('click',startIQTest);
 
-    function endTest(){
-      const iq = Math.round(85 + (score / questions.length) * 60);
-      document.getElementById('result').innerHTML = `Dein IQ liegt bei <strong>${iq}</strong> Punkten.`;
-      results.push({iq, datum:new Date().toLocaleString()});
-      results.sort((a,b)=>b.iq - a.iq);
-      results = results.slice(0,50);
-      localStorage.setItem('iq_results', JSON.stringify(results));
-      renderTopList();
-    }
+    // FOCUS TEST
+    let startTime,timeout,times=[];const circle=document.getElementById('circle');
+    circle.addEventListener('click',()=>{if(circle.style.background==='green'){const reaction=Date.now()-startTime;times.push(reaction);document.getElementById('reactionResult').textContent=`Reaktion: ${reaction} ms`;updateAverage();resetCircle();}else{document.getElementById('reactionResult').textContent='Zu früh! Warte auf Grün.';}});
+    function startFocus(){document.getElementById('reactionResult').textContent='Bereit...';timeout=setTimeout(()=>{circle.style.background='green';circle.style.boxShadow='0 0 30px var(--accent)';startTime=Date.now();},Math.random()*3000+1000);}
+    function resetCircle(){circle.style.background='red';circle.style.boxShadow='0 0 30px rgba(0,255,200,0.2)';clearTimeout(timeout);setTimeout(startFocus,1500);}
+    function updateAverage(){const avg=Math.round(times.reduce((a,b)=>a+b,0)/times.length);document.getElementById('averageResult').textContent=`Ø Durchschnitt: ${avg} ms`;}
+    startFocus();
 
-    function renderTopList(){
-      const list = document.getElementById('topList');
-      list.innerHTML = results.map((r,i)=>`<li>${i+1}. IQ: <strong>${r.iq}</strong> – ${r.datum}</li>`).join('');
-    }
-
-    function showTab(tab){
-      document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
-      document.getElementById(tab).classList.remove('hidden');
-    }
-
-    // Konzentrationstest Logik
-    const circle = document.getElementById('circle');
-    const focusResult = document.getElementById('focusResult');
-    let startTime, timeout;
-
-    circle.addEventListener('click',()=>{
-      if(circle.style.background==='green'){
-        const reaction = Date.now() - startTime;
-        focusResult.textContent = `Reaktionszeit: ${reaction} ms`;
-        circle.style.background='red';
-        clearTimeout(timeout);
-        startFocusTest();
-      } else {
-        focusResult.textContent = 'Zu früh! Warte auf Grün!';
-      }
-    });
-
-    function startFocusTest(){
-      focusResult.textContent = 'Bereit...';
-      timeout = setTimeout(()=>{
-        circle.style.background='green';
-        startTime = Date.now();
-      }, Math.random()*3000 + 2000);
-    }
-
-    document.getElementById('nextBtn').addEventListener('click',()=> renderQuestion());
-    document.getElementById('resetBtn').addEventListener('click',()=>{index=0;score=0;renderQuestion();document.getElementById('result').innerHTML='';});
-
-    renderQuestion();
-    renderTopList();
-    startFocusTest();
+    // PSY TESTS
+    const psyTests={stress:[{q:'Wie oft fühlst du dich unter Druck?',a:['Nie','Selten','Oft','Sehr oft'],s:[1,2,3,4]},{q:'Kannst du gut abschalten?',a:['Ja','Teilweise','Selten','Nie'],s:[1,2,3,4]}],emotion:[{q:'Wie schnell wirst du gereizt?',a:['Selten','Manchmal','Oft','Sehr oft'],s:[1,2,3,4]},{q:'Wie stabil fühlst du dich in Konflikten?',a:['Sehr stabil','Eher stabil','Unsicher','Instabil'],s:[1,2,3,4]}]};
+    const psyAnswers={stress:[],emotion:[]};
+    document.querySelectorAll('.psyStart').forEach(btn=>btn.addEventListener('click',()=>startPsy(btn.dataset.type)));
+    function startPsy(type){const box=document.getElementById('psyBox');box.innerHTML='';psyAnswers[type]=[];document.getElementById('psyResult').textContent='';psyTests[type].forEach((item,i)=>{const div=document.createElement('div');div.classList.add('question');div.innerHTML=`<h3>${item.q}</h3>`+item.a.map((ans,ai)=>`<button class='option' data-i='${i}' data-s='${item.s[ai]}' data-type='${type}'>${ans}</button>`).join('');box.appendChild(div);});box.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>recordPsy(btn.dataset.type,Number(btn.dataset.i),Number(btn.dataset.s))));}
+    function recordPsy(type,i,score){psyAnswers[type][i]=score;if(psyAnswers[type].filter(v=>v!==undefined).length===psyTests[type].length){const total=psyAnswers[type].reduce((a,b)=>a+b,0);let interp='';if(type==='stress'){interp=total<=4?'Entspannt':total<=6?'Leichte Anspannung':total<=8?'Erhöhtes Stresslevel':'Starke Belastung';}else{interp=total<=4?'Emotional stabil':total<=6?'Leichte Schwankungen':total<=8?'Unsicherheiten':'Hohe emotionale Belastung';}document.getElementById('psyResult').innerHTML=`${type}-Test abgeschlossen.<br><strong>${interp}</strong><br>(Punkte: ${total})`;}}
   </script>
 </body>
 </html>
