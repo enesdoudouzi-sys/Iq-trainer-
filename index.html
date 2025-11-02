@@ -18,11 +18,14 @@
     }
     *{box-sizing:border-box;transition:all .3s ease;}
     body{margin:0;background:radial-gradient(circle at top,#0a0a0a,#000);color:var(--text);font-family:'Poppins',sans-serif;overflow-x:hidden;}
-    header{padding:3rem 1rem;text-align:center;}
+    header{padding:3rem 1rem 1rem;text-align:center;position:relative;}
     header h1{margin:0;font-size:3rem;text-transform:uppercase;font-family:'Orbitron',sans-serif;letter-spacing:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:glow 3s ease-in-out infinite alternate;}
     header .quote{color:var(--accent);font-style:italic;font-size:1.2rem;margin-top:1rem;max-width:720px;margin-left:auto;margin-right:auto;animation:fadeIn 4s ease-in-out;font-weight:500;text-wrap:balance;}
     @keyframes glow{from{text-shadow:0 0 10px var(--accent);}to{text-shadow:0 0 25px var(--accent2);}}
     @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+    .lang-switch{position:absolute;top:1rem;right:1rem;background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:.4rem .6rem;box-shadow:0 0 12px rgba(0,255,200,0.2)}
+    .lang-switch select{background:transparent;border:none;color:var(--text);font-weight:600}
 
     main{max-width:1000px;margin:3rem auto;padding:2.5rem;background:rgba(15,15,15,0.85);border-radius:20px;backdrop-filter:blur(10px);box-shadow:0 0 25px rgba(0,255,200,0.3);display:grid;grid-template-columns:1fr 280px;gap:2rem;}
     @media(max-width:900px){main{grid-template-columns:1fr;}}
@@ -33,16 +36,16 @@
     .tab-buttons{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;justify-content:center;}
 
     /* Cards / Fragen */
-    .question{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:1.4rem;margin:1rem 0;box-shadow:0 0 20px rgba(0,255,200,0.1);}
-    .question h3{margin-top:0;font-size:1.1rem;line-height:1.5;color:var(--text);}
+    .question{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:1.4rem;margin:1rem 0;box-shadow:0 0 20px rgba(0,255,200,0.1);} 
+    .question h3{margin-top:0;font-size:1.1rem;line-height:1.5;color:var(--text);} 
 
     /* Buttons */
-    button.option,button.start-btn,button.danger-btn,#consentOk{padding:0.7rem 1.3rem;border:none;border-radius:12px;cursor:pointer;background:linear-gradient(90deg,var(--accent2),var(--accent));color:#000;font-weight:600;min-width:140px;font-size:1rem;box-shadow:0 0 15px rgba(0,255,200,0.4);}
-    button.option:hover,button.start-btn:hover,button.danger-btn:hover,#consentOk:hover{transform:scale(1.08);box-shadow:0 0 20px rgba(0,255,200,0.6);}
-    button.danger-btn{background:linear-gradient(90deg,var(--danger),#ff8b4d);box-shadow:0 0 15px rgba(255,77,106,0.5);color:#000;}
+    button.option,button.start-btn,button.danger-btn,#consentOk{padding:0.7rem 1.3rem;border:none;border-radius:12px;cursor:pointer;background:linear-gradient(90deg,var(--accent2),var(--accent));color:#000;font-weight:600;min-width:140px;font-size:1rem;box-shadow:0 0 15px rgba(0,255,200,0.4);} 
+    button.option:hover,button.start-btn:hover,button.danger-btn:hover,#consentOk:hover{transform:scale(1.08);box-shadow:0 0 20px rgba(0,255,200,0.6);} 
+    button.danger-btn{background:linear-gradient(90deg,var(--danger),#ff8b4d);box-shadow:0 0 15px rgba(255,77,106,0.5);color:#000;} 
     button.small{min-width:auto;font-size:.9rem;padding:.5rem 1rem;}
 
-    .card-center{text-align:center;padding:2rem;background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;max-width:400px;margin:0 auto 2rem;box-shadow:0 0 20px rgba(0,255,200,0.1);}
+    .card-center{text-align:center;padding:2rem;background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;max-width:400px;margin:0 auto 2rem;box-shadow:0 0 20px rgba(0,255,200,0.1);} 
     .start-hint{color:var(--muted);font-size:.9rem;margin-top:.8rem;}
 
     /* Screens */
@@ -56,12 +59,13 @@
     .sidebar-title{margin-top:0;color:var(--accent);font-family:'Orbitron',sans-serif;font-size:0.8rem;letter-spacing:.05em;text-transform:uppercase;}
     .sidebar-line{font-size:1rem;color:var(--text);} 
     .sidebar-note{color:var(--muted);font-size:.8rem;}
+    .ai-tip{margin-top:.6rem;color:var(--accent2);font-weight:600;}
 
     /* Statistik */
-    .stats-block{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1rem;margin-bottom:1rem;font-size:.95rem;box-shadow:0 0 16px rgba(0,255,200,0.08);}
+    .stats-block{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1rem;margin-bottom:1rem;font-size:.95rem;box-shadow:0 0 16px rgba(0,255,200,0.08);} 
     .stats-block h3{margin-top:0;font-size:1rem;color:var(--accent);font-family:'Orbitron',sans-serif;letter-spacing:.05em;}
-    .history-list{list-style:none;padding-left:1rem;color:var(--text);font-size:.9rem;}
-    .history-list li{margin-bottom:.4rem;color:var(--muted);}
+    .history-list{list-style:none;padding-left:1rem;color:var(--text);font-size:.9rem;} 
+    .history-list li{margin-bottom:.4rem;color:var(--muted);} 
 
     footer{text-align:center;padding:1.5rem 1rem;color:var(--muted);font-size:0.9rem;margin-top:4rem;grid-column:1 / -1;}
 
@@ -71,6 +75,12 @@
 </head>
 <body>
   <header>
+    <div class="lang-switch">
+      <select id="langSelect" aria-label="Language">
+        <option value="de" selected>🇩🇪 DE</option>
+        <option value="en">🇬🇧 EN</option>
+      </select>
+    </div>
     <p class="quote">„Der Mensch ist der Mittelpunkt der Welt, weil er denkt.“ – Ibn Sina (Avicenna)</p>
     <h1>Daily IQ & Focus Trainer</h1>
   </header>
@@ -79,44 +89,44 @@
     <section id="contentArea">
       <!-- Navigation Buttons -->
       <div class="tab-buttons">
-        <button data-screen="intro" class="option">Start</button>
-        <button data-screen="iqTest" class="option">IQ‑Test</button>
-        <button data-screen="psyTest" class="option">Psyche</button>
-        <button data-screen="stats" class="option">Statistik</button>
+        <button data-screen="intro" class="option" id="tabStart">Start</button>
+        <button data-screen="iqTest" class="option" id="tabIQ">IQ‑Test</button>
+        <button data-screen="psyTest" class="option" id="tabPsy">Psyche</button>
+        <button data-screen="stats" class="option" id="tabStats">Statistik</button>
       </div>
 
       <!-- INTRO / START -->
       <section id="intro" class="screen active">
         <div class="card-center">
           <button id="startBtn" class="start-btn">Test starten</button>
-          <p class="start-hint">Deine Ergebnisse werden nur lokal auf deinem Gerät gespeichert.</p>
+          <p class="start-hint" id="hintLocal">Deine Ergebnisse werden nur lokal auf deinem Gerät gespeichert.</p>
         </div>
       </section>
 
       <!-- IQ TEST -->
       <section id="iqTest" class="screen">
-        <h2>IQ‑Test</h2>
+        <h2 id="iqTitle">IQ‑Test</h2>
         <div id="iqQuestions"></div>
         <p id="iqResult" class="result-line"></p>
       </section>
 
       <!-- PSYCHE TEST -->
       <section id="psyTest" class="screen">
-        <h2>Psyche‑Analyse</h2>
+        <h2 id="psyTitle">Psyche‑Analyse</h2>
         <div id="psyQuestions"></div>
         <p id="psyResult" class="result-line"></p>
       </section>
 
       <!-- STATS / VERLAUF -->
       <section id="stats" class="screen">
-        <h2>Deine Statistik</h2>
+        <h2 id="statsTitle">Deine Statistik</h2>
         <div class="stats-block">
-          <div><strong>Letzter IQ‑Score:</strong> <span id="statLastIQ">–</span></div>
-          <div><strong>Letzte Psyche‑Einstufung:</strong> <span id="statPsyLevel">–</span></div>
+          <div><strong id="labelLastIQ">Letzter IQ‑Score:</strong> <span id="statLastIQ">–</span></div>
+          <div><strong id="labelLastPsy">Letzte Psyche‑Einstufung:</strong> <span id="statPsyLevel">–</span></div>
         </div>
 
         <div class="stats-block">
-          <h3>Historie</h3>
+          <h3 id="historyH3">Historie</h3>
           <ul id="historyList" class="history-list"></ul>
         </div>
 
@@ -127,11 +137,12 @@
     <!-- SIDEBAR -->
     <aside>
       <div class="sidebar-card">
-        <h4 class="sidebar-title">Live Status</h4>
-        <div class="sidebar-line">Aktiver Test: <span id="liveTest">–</span></div>
-        <div class="sidebar-line">Frage #: <span id="liveQuestion">0</span></div>
-        <div class="sidebar-line">Score: <span id="liveScore">0</span></div>
+        <h4 class="sidebar-title" id="liveStatusTitle">Live Status</h4>
+        <div class="sidebar-line" id="lblActive">Aktiver Test: <span id="liveTest">–</span></div>
+        <div class="sidebar-line" id="lblQuestion">Frage #: <span id="liveQuestion">0</span></div>
+        <div class="sidebar-line" id="lblScore">Score: <span id="liveScore">0</span></div>
         <div class="sidebar-note" id="liveNote">Bereit.</div>
+        <div class="ai-tip" id="aiTip">🤖 KI‑Tipp erscheint nach dem Test.</div>
       </div>
     </aside>
 
@@ -140,11 +151,102 @@
 
   <!-- CONSENT-BANNER (DSGVO Style) -->
   <div id="consentBanner" class="consent-banner">
-    <div>Lokale Auswertung aktiv. Deine Ergebnisse bleiben nur in deinem Browser (LocalStorage).</div>
+    <div id="consentText">Lokale Auswertung aktiv. Deine Ergebnisse bleiben nur in deinem Browser (LocalStorage).</div>
     <button id="consentOk" class="start-btn small">OK</button>
   </div>
 
   <script>
+    // =====================
+    // i18n Texte & Fragen
+    // =====================
+    const i18n = {
+      de: {
+        ui: {
+          start:'Start', iq:'IQ‑Test', psy:'Psyche', stats:'Statistik',
+          introHint:'Deine Ergebnisse werden nur lokal auf deinem Gerät gespeichert.',
+          live:{ title:'Live Status', ready:'Bereit.', activeIQ:'IQ‑Test', activePsy:'Psyche' },
+          labels:{ lastIQ:'Letzter IQ‑Score:', lastPsy:'Letzte Psyche‑Einstufung:', history:'Historie' },
+          results:{
+            iq:(s,t)=>`Dein IQ‑Score: ${s} / ${t}`,
+            psycheLevel:(tot)=> tot<=12?'Sehr entspannt': tot<=20?'Leichte Anspannung':'Erhöhtes Stresslevel'
+          },
+          ai:{
+            iq:(s,t)=> s/t>=0.8 ? 'Stark! Logik & Muster sitzen.' : s/t>=0.5 ? 'Gute Basis. Tempo & Genauigkeit weiter ausbauen.' : 'Back to basics: Kopfrechnen & Muster trainieren.',
+            psy:(lvl)=> lvl.includes('Erhöht') ? 'Heute 5‑Minuten‑Atmung + kurzer Walk.' : lvl.includes('Leichte') ? '45‑Minuten‑Fokus, dann Mini‑Break.' : 'Stabil – Routinen beibehalten.'
+          },
+          compare:{ better:(c)=>`Überdurchschnittlich im Vergleich zu ${c}.`, avg:(c)=>`Etwa im Durchschnitt von ${c}.`, worse:(c)=>`Unterdurchschnittlich im Vergleich zu ${c}.` }
+        },
+        iq: [
+          {q:'Was ist 9 × 9?',a:['72','81','99'],c:1},
+          {q:'Was ergibt 5³?',a:['25','125','225'],c:1},
+          {q:'Welche Zahl folgt: 2,4,8,16,?',a:['24','32','36'],c:1},
+          {q:'Wähle das Gegenteil von „chaotisch“',a:['geordnet','hektisch','nervös'],c:0},
+          {q:'Was ist 20% von 400?',a:['40','60','80'],c:2},
+          {q:'Welche Zahl vervollständigt: 3,6,9,12,?',a:['13','14','15'],c:2},
+          {q:'Was ist 12 × 12?',a:['124','144','132'],c:1},
+          {q:'Wurzel aus 81?',a:['7','8','9'],c:2},
+          {q:'Wie viele Sekunden hat eine Stunde?',a:['3600','6000','1800'],c:0},
+          {q:'Wenn alle Rosen Blumen sind und einige Blumen schnell verblühen, was folgt?',a:['Alle Rosen verblühen schnell','Einige Rosen verblühen schnell','Keine Rosen verblühen'],c:1}
+        ],
+        psy: [
+          {q:'Wie oft fühlst du dich unter Druck?',a:['Nie','Selten','Manchmal','Oft','Sehr oft'],s:[1,2,3,4,5]},
+          {q:'Kannst du gut abschalten?',a:['Ja','Meistens','Teilweise','Selten','Nein'],s:[1,2,3,4,5]},
+          {q:'Wie stabil fühlst du dich in Konflikten?',a:['Sehr stabil','Stabil','Unsicher','Instabil','Sehr instabil'],s:[1,2,3,4,5]},
+          {q:'Wie erholt fühlst du dich morgens?',a:['Sehr','Gut','Geht so','Müde','Erschöpft'],s:[1,2,3,4,5]},
+          {q:'Wie häufig grübelst du?',a:['Nie','Selten','Manchmal','Oft','Ständig'],s:[1,2,3,4,5]},
+          {q:'Wie gut gelingt dir Fokus ohne Ablenkung?',a:['Sehr gut','Gut','Okay','Schwer','Gar nicht'],s:[1,2,3,4,5]},
+          {q:'Wie ausgeglichen ist deine Stimmung?',a:['Sehr','Ziemlich','Teils','Eher nicht','Gar nicht'],s:[1,2,3,4,5]},
+          {q:'Wie ist dein Stress aktuell?',a:['Sehr niedrig','Niedrig','Mittel','Hoch','Sehr hoch'],s:[1,2,3,4,5]}
+        ]
+      },
+      en: {
+        ui: {
+          start:'Start', iq:'IQ Test', psy:'Psyche', stats:'Stats',
+          introHint:'Your results are stored locally in your browser only.',
+          live:{ title:'Live Status', ready:'Ready.', activeIQ:'IQ Test', activePsy:'Psyche' },
+          labels:{ lastIQ:'Last IQ Score:', lastPsy:'Last Psyche Level:', history:'History' },
+          results:{
+            iq:(s,t)=>`Your IQ score: ${s} / ${t}`,
+            psycheLevel:(tot)=> tot<=12?'Very relaxed': tot<=20?'Mild tension':'Elevated stress'
+          },
+          ai:{
+            iq:(s,t)=> s/t>=0.8 ? 'Great! Strong logic & patterns.' : s/t>=0.5 ? 'Solid base. Improve speed & accuracy.' : 'Back to fundamentals: mental math & patterns.',
+            psy:(lvl)=> lvl.includes('Elevated') ? 'Try 5‑minute breathing + short walk.' : lvl.includes('Mild') ? '45‑min focus, then a micro‑break.' : 'Stable – keep routines.'
+          },
+          compare:{ better:(c)=>`Above average vs ${c}.`, avg:(c)=>`Around the average of ${c}.`, worse:(c)=>`Below average vs ${c}.` }
+        },
+        iq: [
+          {q:'What is 9 × 9?',a:['72','81','99'],c:1},
+          {q:'What is 5³?',a:['25','125','225'],c:1},
+          {q:'Which number comes next: 2,4,8,16,?',a:['24','32','36'],c:1},
+          {q:'Choose the opposite of “chaotic”',a:['orderly','hectic','nervous'],c:0},
+          {q:'What is 20% of 400?',a:['40','60','80'],c:2},
+          {q:'Complete: 3,6,9,12,?',a:['13','14','15'],c:2},
+          {q:'What is 12 × 12?',a:['124','144','132'],c:1},
+          {q:'Square root of 81?',a:['7','8','9'],c:2},
+          {q:'How many seconds in an hour?',a:['3600','6000','1800'],c:0},
+          {q:'If all roses are flowers and some flowers wither quickly, what follows?',a:['All roses wither quickly','Some roses wither quickly','No roses wither'],c:1}
+        ],
+        psy: [
+          {q:'How often do you feel under pressure?',a:['Never','Rarely','Sometimes','Often','Very often'],s:[1,2,3,4,5]},
+          {q:'Can you switch off well?',a:['Yes','Mostly','Partly','Rarely','No'],s:[1,2,3,4,5]},
+          {q:'How stable are you in conflicts?',a:['Very stable','Stable','Insecure','Unstable','Very unstable'],s:[1,2,3,4,5]},
+          {q:'How refreshed do you feel in the morning?',a:['Very','Good','So‑so','Tired','Exhausted'],s:[1,2,3,4,5]},
+          {q:'How often do you ruminate?',a:['Never','Rarely','Sometimes','Often','Constantly'],s:[1,2,3,4,5]},
+          {q:'How well can you focus without distraction?',a:['Very well','Well','Okay','Hard','Not at all'],s:[1,2,3,4,5]},
+          {q:'How balanced is your mood?',a:['Very','Quite','Partly','Rather not','Not at all'],s:[1,2,3,4,5]},
+          {q:'What is your current stress level?',a:['Very low','Low','Medium','High','Very high'],s:[1,2,3,4,5]}
+        ]
+      }
+    };
+
+    // =====================
+    // Sprache speichern/laden
+    // =====================
+    const langSelect = document.getElementById('langSelect');
+    const getLang = () => localStorage.getItem('lang') || 'de';
+    const setLang = (l)=>{ localStorage.setItem('lang', l); langSelect.value = l; applyLang(); };
+
     // =====================
     // Screen Handling / Navigation
     // =====================
@@ -158,13 +260,11 @@
     function showScreen(id){
       screens.forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-      liveTestEl.textContent = id === 'iqTest' ? 'IQ‑Test'
-        : id === 'psyTest' ? 'Psyche'
+      liveTestEl.textContent = id === 'iqTest' ? (getLang()==='de'? i18n.de.ui.live.activeIQ : i18n.en.ui.live.activeIQ)
+        : id === 'psyTest' ? (getLang()==='de'? i18n.de.ui.live.activePsy : i18n.en.ui.live.activePsy)
         : '–';
-      liveNoteEl.textContent = id === 'psyTest' ? 'Ehrlich antworten.' : 'Bereit.';
-      if(id === 'stats'){
-        updateStatsDisplay();
-      }
+      liveNoteEl.textContent = id === 'psyTest' ? (getLang()==='de'?'Ehrlich antworten.':'Answer honestly.') : (getLang()==='de'? i18n.de.ui.live.ready : i18n.en.ui.live.ready);
+      if(id === 'stats') updateStatsDisplay();
     }
 
     navButtons.forEach(btn=>{
@@ -175,46 +275,67 @@
     });
 
     // =====================
-    // Consent Banner (Datenschutz Hinweis)
+    // Consent Banner
     // =====================
     const consentBanner = document.getElementById('consentBanner');
     const consentOk = document.getElementById('consentOk');
-    if(localStorage.getItem('consentAccepted') === '1'){
-      consentBanner.style.display = 'none';
-    }
-    consentOk.addEventListener('click',()=>{
-      localStorage.setItem('consentAccepted','1');
-      consentBanner.style.display = 'none';
-    });
+    if(localStorage.getItem('consentAccepted') === '1') consentBanner.style.display = 'none';
+    consentOk.addEventListener('click',()=>{ localStorage.setItem('consentAccepted','1'); consentBanner.style.display = 'none'; });
 
     // =====================
-    // IQ‑Test Logik
+    // IQ‑Test Logik + KI‑Feedback + Länder-Vergleich
     // =====================
-    const iqQuestions = [
-      {q:'Was ist 9 × 9?',a:['72','81','99'],c:1},
-      {q:'Was ergibt 5³?',a:['25','125','225'],c:1},
-      {q:'Welche Zahl folgt: 2,4,8,16,?',a:['24','32','36'],c:1},
-      {q:'Wähle das Gegenteil von „chaotisch“',a:['geordnet','hektisch','nervös'],c:0},
-      {q:'Was ist 20% von 400?',a:['40','60','80'],c:2}
-    ];
-
-    let iqIndex = 0;
-    let iqScore = 0;
     const iqContainer = document.getElementById('iqQuestions');
     const iqResult = document.getElementById('iqResult');
+    const aiTip = document.getElementById('aiTip');
+
+    let iqIndex = 0; let iqScore = 0;
+
+    function getIQ(){ return i18n[getLang()].iq; }
 
     function renderIQ() {
-      if(iqIndex >= iqQuestions.length) {
-        const text = `Dein IQ‑Score: ${iqScore} / ${iqQuestions.length}`;
-        iqResult.textContent = text;
-        saveResult({ type:'iq', score: iqScore, total: iqQuestions.length, ts: Date.now() });
+      const arr = getIQ();
+      if(iqIndex >= arr.length) {
+        const msg = i18n[getLang()].ui.results.iq(iqScore, arr.length);
+        iqResult.textContent = msg;
+
+        // KI‑Feedback (lokal, regelbasiert)
+        const tip = i18n[getLang()].ui.ai.iq(iqScore, arr.length);
+        aiTip.textContent = '🤖 ' + tip;
+
+        // Weltweite Einordnung (Percentile) + Ländervergleich (Deutschland ≈ 102)
+        const percentile = Math.round((iqScore / arr.length) * 100);
+        let globalRank = '—';
+        if(percentile >= 90) globalRank = getLang()==='de' ? 'Top 10% weltweit' : 'Top 10% worldwide';
+        else if(percentile >= 70) globalRank = getLang()==='de' ? 'Top 30% weltweit' : 'Top 30% worldwide';
+        else if(percentile >= 50) globalRank = getLang()==='de' ? 'Durchschnittsbereich weltweit' : 'Average range worldwide';
+        else if(percentile >= 30) globalRank = getLang()==='de' ? 'Unterdurchschnittlich (global)' : 'Below average (global)';
+        else globalRank = getLang()==='de' ? 'Deutlich unter Durchschnitt (global)' : 'Significantly below average (global)';
+
+        const country = getLang()==='de' ? 'Deutschland (Ø 102)' : 'World avg (100)';
+        const estIQ = Math.round((iqScore / arr.length) * 150); // grobe Normierung auf 150 Max
+        let compareTxt;
+        if(getLang()==='de'){
+          compareTxt = estIQ > 107 ? i18n.de.ui.compare.better(country) : estIQ < 97 ? i18n.de.ui.compare.worse(country) : i18n.de.ui.compare.avg(country);
+        } else {
+          compareTxt = estIQ > 105 ? i18n.en.ui.compare.better(country) : estIQ < 95 ? i18n.en.ui.compare.worse(country) : i18n.en.ui.compare.avg(country);
+        }
+
+        const globalInfo = document.createElement('div');
+        globalInfo.style.color = 'var(--accent2)';
+        globalInfo.style.marginTop = '0.6rem';
+        globalInfo.style.fontWeight = '600';
+        globalInfo.style.textAlign = 'center';
+        globalInfo.innerHTML = `🌍 <strong>${getLang()==='de' ? 'Weltweite Einstufung' : 'Global Ranking'}:</strong> ${globalRank}<br>🧠 ${compareTxt}`;
+        iqResult.insertAdjacentElement('afterend', globalInfo);
+
+        saveResult({ type:'iq', score: iqScore, total: arr.length, ts: Date.now(), lang:getLang() });
         updateStatsDisplay();
         return;
       }
 
-      const q = iqQuestions[iqIndex];
-      liveQuestionEl.textContent = iqIndex+1;
-      liveScoreEl.textContent = iqScore;
+      const q = arr[iqIndex];
+      liveQuestionEl.textContent = iqIndex+1; liveScoreEl.textContent = iqScore;
       iqContainer.innerHTML = `
         <div class="question">
           <h3>${q.q}</h3>
@@ -233,23 +354,20 @@
     }
 
     // =====================
-    // Psyche‑Analyse Logik
+    // Psyche‑Analyse Logik (5‑Stufen) + KI‑Tipp
     // =====================
-    const psyQuestions = [
-      {q:'Wie oft fühlst du dich unter Druck?',a:['Nie','Selten','Oft'],s:[1,2,3]},
-      {q:'Kannst du gut abschalten?',a:['Ja','Teilweise','Nein'],s:[1,2,3]},
-      {q:'Wie stabil fühlst du dich in Konflikten?',a:['Sehr stabil','Unsicher','Instabil'],s:[1,2,3]}
-    ];
-
     const psyContainer = document.getElementById('psyQuestions');
     const psyResult = document.getElementById('psyResult');
     let psyAnswers = [];
 
+    function getPsy(){ return i18n[getLang()].psy; }
+
     function renderPsy(){
       psyContainer.innerHTML = '';
       psyAnswers = [];
+      const arr = getPsy();
 
-      psyQuestions.forEach((item, idx) => {
+      arr.forEach((item, idx) => {
         const block = document.createElement('div');
         block.classList.add('question');
         block.innerHTML = `
@@ -265,16 +383,13 @@
           const score  = Number(btn.getAttribute('data-score'));
           psyAnswers[qIndex] = score;
 
-          // wenn alle beantwortet
-          if(psyAnswers.filter(v=>v!==undefined).length === psyQuestions.length){
+          if(psyAnswers.filter(v=>v!==undefined).length === getPsy().length){
             const total = psyAnswers.reduce((a,b)=>a+b,0);
-            let msg;
-            if(total <= 4) msg = 'Sehr entspannt';
-            else if(total <= 6) msg = 'Leichte Anspannung';
-            else msg = 'Erhöhtes Stresslevel';
-
-            psyResult.textContent = msg;
-            saveResult({ type:'psy', level: msg, score: total, ts: Date.now() });
+            const lvl = i18n[getLang()].ui.results.psycheLevel(total);
+            psyResult.textContent = lvl;
+            const tip = i18n[getLang()].ui.ai.psy(lvl);
+            aiTip.textContent = '🤖 ' + tip;
+            saveResult({ type:'psy', level: lvl, score: total, ts: Date.now(), lang:getLang() });
             updateStatsDisplay();
           }
         });
@@ -293,7 +408,7 @@
       const raw = localStorage.getItem('history');
       const hist = raw ? JSON.parse(raw) : [];
       hist.push(entry);
-      if(hist.length > 50) hist.shift();
+      if(hist.length > 200) hist.shift();
       localStorage.setItem('history', JSON.stringify(hist));
     }
 
@@ -301,23 +416,17 @@
       const raw = localStorage.getItem('history');
       const hist = raw ? JSON.parse(raw) : [];
 
-      // letzter IQ
       const lastIQ = [...hist].reverse().find(e=>e.type==='iq');
       statLastIQ.textContent = lastIQ ? `${lastIQ.score} / ${lastIQ.total}` : '–';
 
-      // letzte Psyche
       const lastPsy = [...hist].reverse().find(e=>e.type==='psy');
       statPsyLevel.textContent = lastPsy ? lastPsy.level : '–';
 
-      // History-Liste
       historyList.innerHTML = '';
       hist.slice().reverse().forEach(entry=>{
         let line='';
-        if(entry.type==='iq'){
-          line = `IQ: ${entry.score}/${entry.total}`;
-        } else if(entry.type==='psy'){
-          line = `Psyche: ${entry.level} (Score ${entry.score})`;
-        }
+        if(entry.type==='iq') line = `IQ: ${entry.score}/${entry.total}`;
+        else if(entry.type==='psy') line = `Psyche: ${entry.level} (Score ${entry.score})`;
         const li = document.createElement('li');
         const date = new Date(entry.ts).toLocaleString();
         li.textContent = `${date} – ${line}`;
@@ -336,15 +445,39 @@
     const startBtn = document.getElementById('startBtn');
     startBtn.addEventListener('click',()=>{
       showScreen('iqTest');
-      renderIQ();
+      iqIndex = 0; iqScore = 0; renderIQ();
       startBtn.disabled = true;
-      startBtn.textContent = 'Läuft...';
+      startBtn.textContent = getLang()==='de' ? 'Läuft...' : 'Running...';
     });
 
-    // Initial Psyche-Blöcke rendern (damit Psyche-Tab bereit ist)
+    // =====================
+    // Sprache anwenden
+    // =====================
+    function applyLang(){
+      const L = i18n[getLang()].ui;
+      document.getElementById('tabStart').textContent = L.start;
+      document.getElementById('tabIQ').textContent = L.iq;
+      document.getElementById('tabPsy').textContent = L.psy;
+      document.getElementById('tabStats').textContent = L.stats;
+      document.getElementById('hintLocal').textContent = L.introHint;
+      document.getElementById('liveStatusTitle').textContent = L.live.title;
+      document.getElementById('iqTitle').textContent = L.iq;
+      document.getElementById('psyTitle').textContent = L.psy;
+      document.getElementById('statsTitle').textContent = L.stats;
+      document.getElementById('labelLastIQ').textContent = L.labels.lastIQ;
+      document.getElementById('labelLastPsy').textContent = L.labels.lastPsy;
+      document.getElementById('historyH3').textContent = L.labels.history;
+      renderPsy();
+    }
+
+    langSelect.addEventListener('change', ()=> setLang(langSelect.value));
+
+    // Initialisieren
+    setLang(getLang());
     renderPsy();
   </script>
 </body>
 </html>
+
 
 
