@@ -2,8 +2,25 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Daily IQ & Focus Trainer</title>
+
+  <!-- PWA Meta Tags -->
+  <meta name="application-name" content="IQ Trainer">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="IQ Trainer">
+  <meta name="description" content="Trainieren Sie täglich Ihren IQ und Ihre Konzentration">
+  <meta name="theme-color" content="#00ffcc">
+
+  <!-- Apple Touch Icons -->
+  <link rel="apple-touch-icon" href="icons/icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167x167.png">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="/manifest.json">
 
   <!-- Content Security Policy (Basis, lokal erlaubt) -->
   <meta http-equiv="Content-Security-Policy"
@@ -19,12 +36,95 @@
     *{box-sizing:border-box;transition:all .3s ease;}
     body{margin:0;background:radial-gradient(circle at top,#0a0a0a,#000);color:var(--text);font-family:'Poppins',sans-serif;overflow-x:hidden;}
     header{padding:3rem 1rem 1rem;text-align:center;position:relative;}
-    header h1{margin:0;font-size:3rem;text-transform:uppercase;font-family:'Orbitron',sans-serif;letter-spacing:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:glow 3s ease-in-out infinite alternate;}
-    header .quote{color:var(--accent);font-style:italic;font-size:1.2rem;margin-top:1rem;max-width:720px;margin-left:auto;margin-right:auto;animation:fadeIn 4s ease-in-out;font-weight:500;text-wrap:balance;}
-    @keyframes glow{from{text-shadow:0 0 10px var(--accent);}to{text-shadow:0 0 25px var(--accent2);}}
-    @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+    header h1{margin:0;font-size:3rem;text-transform:uppercase;font-family:'Orbitron',sans-serif;letter-spacing:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:glow 3s ease-in-out infinite alternate;}
+    @keyframes quoteReveal {
+      0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+        text-shadow: 0 0 0 rgba(0,255,204,0);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        text-shadow: 0 0 20px rgba(0,255,204,0.4);
+      }
+      75% {
+        text-shadow: 0 0 30px rgba(0,195,255,0.6);
+      }
+      100% {
+        text-shadow: 0 0 20px rgba(0,255,204,0.4);
+      }
+    }
 
-    .lang-switch{position:absolute;top:1rem;right:1rem;background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:.4rem .6rem;box-shadow:0 0 12px rgba(0,255,200,0.2)}
+    header .quote {
+      color: var(--accent);
+      font-style: italic;
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 500;
+      text-wrap: balance;
+      position: relative;
+      animation: quoteReveal 4s ease-out;
+      transition: all 0.3s ease;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    header .quote:hover {
+      transform: translateY(-2px) scale(1.02);
+      text-shadow: 0 0 30px rgba(0,255,204,0.6);
+      background: rgba(0,255,204,0.05);
+      border: 1px solid rgba(0,255,204,0.1);
+    }
+
+    header .quote::before,
+    header .quote::after {
+      content: '"';
+      position: absolute;
+      font-size: 2em;
+      opacity: 0.5;
+      font-family: 'Orbitron', sans-serif;
+      color: var(--accent2);
+    }
+
+    header .quote::before {
+      left: -5px;
+      top: -10px;
+    }
+
+    header .quote::after {
+      right: -5px;
+      bottom: -25px;
+    }
+    @keyframes glow{
+      0%{text-shadow:0 0 10px var(--accent);}
+      50%{text-shadow:0 0 20px var(--accent),0 0 30px var(--accent2);}
+      100%{text-shadow:0 0 25px var(--accent2),0 0 35px var(--accent);}
+    }
+    @keyframes fadeIn{
+      0%{opacity:0;transform:translateY(20px);}
+      100%{opacity:1;transform:translateY(0);}
+    }
+    @keyframes pulse{
+      0%{transform:scale(1);}
+      50%{transform:scale(1.05);}
+      100%{transform:scale(1);}
+    }
+    @keyframes slideIn{
+      0%{transform:translateX(-20px);opacity:0;}
+      100%{transform:translateX(0);opacity:1;}
+    }
+    @keyframes cardGlow{
+      0%{box-shadow:0 0 15px rgba(0,255,200,0.2);}
+      50%{box-shadow:0 0 25px rgba(0,255,200,0.4);}
+      100%{box-shadow:0 0 15px rgba(0,255,200,0.2);}
+    }
+
+    .lang-switch{position:absolute;top:1rem;right:1rem;background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:.4rem .6rem;box-shadow:0 0 12px rgba(0,255,200,0.2);transition:all 0.3s ease;}
+    .lang-switch:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,255,200,0.3);}
     .lang-switch select{background:transparent;border:none;color:var(--text);font-weight:600}
 
     main{max-width:1000px;margin:3rem auto;padding:2.5rem;background:rgba(15,15,15,0.85);border-radius:20px;backdrop-filter:blur(10px);box-shadow:0 0 25px rgba(0,255,200,0.3);display:grid;grid-template-columns:1fr 280px;gap:2rem;}
@@ -36,12 +136,53 @@
     .tab-buttons{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;justify-content:center;}
 
     /* Cards / Fragen */
-    .question{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:1.4rem;margin:1rem 0;box-shadow:0 0 20px rgba(0,255,200,0.1);} 
-    .question h3{margin-top:0;font-size:1.1rem;line-height:1.5;color:var(--text);} 
+    .question{
+      background:var(--card-bg);
+      border:1px solid var(--card-border);
+      border-radius:16px;
+      padding:1.4rem;
+      margin:1rem 0;
+      box-shadow:0 0 20px rgba(0,255,200,0.1);
+      animation:fadeIn 0.5s ease-out, cardGlow 3s infinite;
+      transform-origin:center;
+      transition:all 0.3s ease;
+    } 
+    .question:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 25px rgba(0,255,200,0.2);
+    }
+    .question h3{
+      margin-top:0;
+      font-size:1.1rem;
+      line-height:1.5;
+      color:var(--text);
+      animation:slideIn 0.5s ease-out;
+    } 
 
     /* Buttons */
-    button.option,button.start-btn,button.danger-btn,#consentOk{padding:0.7rem 1.3rem;border:none;border-radius:12px;cursor:pointer;background:linear-gradient(90deg,var(--accent2),var(--accent));color:#000;font-weight:600;min-width:140px;font-size:1rem;box-shadow:0 0 15px rgba(0,255,200,0.4);} 
-    button.option:hover,button.start-btn:hover,button.danger-btn:hover,#consentOk:hover{transform:scale(1.08);box-shadow:0 0 20px rgba(0,255,200,0.6);} 
+    button.option,button.start-btn,button.danger-btn,#consentOk{
+      padding:0.7rem 1.3rem;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      background:linear-gradient(90deg,var(--accent2),var(--accent));
+      background-size:200% 100%;
+      color:#000;
+      font-weight:600;
+      min-width:140px;
+      font-size:1rem;
+      box-shadow:0 0 15px rgba(0,255,200,0.4);
+      transition:all 0.3s ease, background-position 0.5s ease;
+    } 
+    button.option:hover,button.start-btn:hover,button.danger-btn:hover,#consentOk:hover{
+      transform:scale(1.08) translateY(-2px);
+      box-shadow:0 8px 25px rgba(0,255,200,0.6);
+      background-position:right center;
+    }
+    button.option:active,button.start-btn:active,button.danger-btn:active,#consentOk:active{
+      transform:scale(0.98);
+      box-shadow:0 2px 10px rgba(0,255,200,0.3);
+    } 
     button.danger-btn{background:linear-gradient(90deg,var(--danger),#ff8b4d);box-shadow:0 0 15px rgba(255,77,106,0.5);color:#000;} 
     button.small{min-width:auto;font-size:.9rem;padding:.5rem 1rem;}
 
@@ -49,17 +190,81 @@
     .start-hint{color:var(--muted);font-size:.9rem;margin-top:.8rem;}
 
     /* Screens */
-    .screen{display:none;}
-    .screen.active{display:block;}
+    .screen{
+      display:none;
+      opacity:0;
+      transform:translateY(20px);
+      transition:all 0.5s ease;
+    }
+    .screen.active{
+      display:block;
+      opacity:1;
+      transform:translateY(0);
+    }
 
-    .result-line{font-size:1.1rem;color:var(--accent);font-weight:500;min-height:1.4rem;}
+    .result-line{
+      font-size:1.1rem;
+      color:var(--accent);
+      font-weight:500;
+      min-height:1.4rem;
+      animation:fadeIn 0.8s ease-out;
+      transition:all 0.3s ease;
+    }
+    .result-line:hover{
+      transform:scale(1.02);
+      text-shadow:0 0 10px var(--accent);
+    }
 
     /* Sidebar */
-    aside .sidebar-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:1rem;box-shadow:0 0 20px rgba(0,255,200,0.1);font-size:.9rem;}
-    .sidebar-title{margin-top:0;color:var(--accent);font-family:'Orbitron',sans-serif;font-size:0.8rem;letter-spacing:.05em;text-transform:uppercase;}
-    .sidebar-line{font-size:1rem;color:var(--text);} 
-    .sidebar-note{color:var(--muted);font-size:.8rem;}
-    .ai-tip{margin-top:.6rem;color:var(--accent2);font-weight:600;}
+    aside .sidebar-card{
+      background:var(--card-bg);
+      border:1px solid var(--card-border);
+      border-radius:16px;
+      padding:1rem;
+      box-shadow:0 0 20px rgba(0,255,200,0.1);
+      font-size:.9rem;
+      animation:cardGlow 4s infinite;
+      transition:all 0.3s ease;
+    }
+    aside .sidebar-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 10px 30px rgba(0,255,200,0.2);
+    }
+    .sidebar-title{
+      margin-top:0;
+      color:var(--accent);
+      font-family:'Orbitron',sans-serif;
+      font-size:0.8rem;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      animation:glow 3s infinite;
+    }
+    .sidebar-line{
+      font-size:1rem;
+      color:var(--text);
+      transition:all 0.3s ease;
+      animation:slideIn 0.5s ease-out;
+    } 
+    .sidebar-line:hover{
+      color:var(--accent);
+      transform:translateX(5px);
+    }
+    .sidebar-note{
+      color:var(--muted);
+      font-size:.8rem;
+      transition:all 0.3s ease;
+    }
+    .ai-tip{
+      margin-top:.6rem;
+      color:var(--accent2);
+      font-weight:600;
+      animation:pulse 2s infinite;
+      transition:all 0.3s ease;
+    }
+    .ai-tip:hover{
+      transform:scale(1.02);
+      color:var(--accent);
+    }
 
     /* Statistik */
     .stats-block{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:1rem;margin-bottom:1rem;font-size:.95rem;box-shadow:0 0 16px rgba(0,255,200,0.08);} 
@@ -130,7 +335,18 @@
           <ul id="historyList" class="history-list"></ul>
         </div>
 
+        <div class="stats-block">
+          <h3>🏆 Highscore</h3>
+          <div><strong>Beste IQ‑Scores:</strong>
+            <ol id="highscoreIQ" class="history-list"></ol>
+          </div>
+          <div style="margin-top:1rem"><strong>Beste Psyche‑Scores:</strong>
+            <ol id="highscorePsy" class="history-list"></ol>
+          </div>
+        </div>
+
         <button id="clearDataBtn" class="danger-btn">Alle gespeicherten Daten löschen</button>
+        <button id="seedDemoBtn" class="start-btn small" style="margin-left:0.6rem">Demo-Daten einfügen</button>
       </section>
     </section>
 
@@ -168,7 +384,7 @@
           labels:{ lastIQ:'Letzter IQ‑Score:', lastPsy:'Letzte Psyche‑Einstufung:', history:'Historie' },
           results:{
             iq:(s,t)=>`Dein IQ‑Score: ${s} / ${t}`,
-            psycheLevel:(tot)=> tot<=12?'Sehr entspannt': tot<=20?'Leichte Anspannung':'Erhöhtes Stresslevel'
+            psycheLevel:(tot)=> tot<=24?'Sehr entspannt': tot<=40?'Leichte Anspannung':tot<=56?'Mittleres Stresslevel':'Erhöhtes Stresslevel'
           },
           ai:{
             iq:(s,t)=> s/t>=0.8 ? 'Stark! Logik & Muster sitzen.' : s/t>=0.5 ? 'Gute Basis. Tempo & Genauigkeit weiter ausbauen.' : 'Back to basics: Kopfrechnen & Muster trainieren.',
@@ -180,13 +396,23 @@
           {q:'Was ist 9 × 9?',a:['72','81','99'],c:1},
           {q:'Was ergibt 5³?',a:['25','125','225'],c:1},
           {q:'Welche Zahl folgt: 2,4,8,16,?',a:['24','32','36'],c:1},
-          {q:'Wähle das Gegenteil von „chaotisch“',a:['geordnet','hektisch','nervös'],c:0},
+          {q:'Wähle das Gegenteil von „chaotisch"',a:['geordnet','hektisch','nervös'],c:0},
           {q:'Was ist 20% von 400?',a:['40','60','80'],c:2},
           {q:'Welche Zahl vervollständigt: 3,6,9,12,?',a:['13','14','15'],c:2},
           {q:'Was ist 12 × 12?',a:['124','144','132'],c:1},
           {q:'Wurzel aus 81?',a:['7','8','9'],c:2},
           {q:'Wie viele Sekunden hat eine Stunde?',a:['3600','6000','1800'],c:0},
-          {q:'Wenn alle Rosen Blumen sind und einige Blumen schnell verblühen, was folgt?',a:['Alle Rosen verblühen schnell','Einige Rosen verblühen schnell','Keine Rosen verblühen'],c:1}
+          {q:'Wenn alle Rosen Blumen sind und einige Blumen schnell verblühen, was folgt?',a:['Alle Rosen verblühen schnell','Einige Rosen verblühen schnell','Keine Rosen verblühen'],c:1},
+          {q:'Welches Wort passt nicht in die Reihe?',a:['Apfel','Banane','Karotte','Orange'],c:2},
+          {q:'Was ist 15 × 15?',a:['215','225','235'],c:1},
+          {q:'Welche Zahl fehlt: 1,4,9,16,?',a:['20','25','36'],c:2},
+          {q:'7 × 8 + 3 = ?',a:['53','56','59'],c:2},
+          {q:'Was ist die Wurzel aus 144?',a:['10','12','14'],c:1},
+          {q:'Vervollständige die Reihe: 2,6,18,?',a:['36','54','72'],c:2},
+          {q:'Ein Zug fährt 250 km/h. Wie weit kommt er in 2 Stunden?',a:['400km','500km','600km'],c:1},
+          {q:'Was ist das Gegenteil von "optimistisch"?',a:['realistisch','pessimistisch','skeptisch'],c:1},
+          {q:'Welche Zahl ist durch 2, 3 und 4 teilbar?',a:['12','18','24'],c:2},
+          {q:'Was ergibt (4 × 4) × (2 × 2)?',a:['48','64','96'],c:1}
         ],
         psy: [
           {q:'Wie oft fühlst du dich unter Druck?',a:['Nie','Selten','Manchmal','Oft','Sehr oft'],s:[1,2,3,4,5]},
@@ -196,7 +422,15 @@
           {q:'Wie häufig grübelst du?',a:['Nie','Selten','Manchmal','Oft','Ständig'],s:[1,2,3,4,5]},
           {q:'Wie gut gelingt dir Fokus ohne Ablenkung?',a:['Sehr gut','Gut','Okay','Schwer','Gar nicht'],s:[1,2,3,4,5]},
           {q:'Wie ausgeglichen ist deine Stimmung?',a:['Sehr','Ziemlich','Teils','Eher nicht','Gar nicht'],s:[1,2,3,4,5]},
-          {q:'Wie ist dein Stress aktuell?',a:['Sehr niedrig','Niedrig','Mittel','Hoch','Sehr hoch'],s:[1,2,3,4,5]}
+          {q:'Wie ist dein Stress aktuell?',a:['Sehr niedrig','Niedrig','Mittel','Hoch','Sehr hoch'],s:[1,2,3,4,5]},
+          {q:'Wie gut schläfst du nachts?',a:['Sehr gut','Gut','Mittelmäßig','Schlecht','Sehr schlecht'],s:[1,2,3,4,5]},
+          {q:'Wie oft hast du Kopfschmerzen?',a:['Nie','Selten','Gelegentlich','Häufig','Sehr häufig'],s:[1,2,3,4,5]},
+          {q:'Wie zufrieden bist du mit deiner Work-Life-Balance?',a:['Sehr','Ziemlich','Mittel','Wenig','Gar nicht'],s:[1,2,3,4,5]},
+          {q:'Wie oft fühlst du dich überfordert?',a:['Nie','Selten','Manchmal','Oft','Ständig'],s:[1,2,3,4,5]},
+          {q:'Wie gut kannst du "Nein" sagen?',a:['Sehr gut','Gut','Mittel','Schwer','Sehr schwer'],s:[1,2,3,4,5]},
+          {q:'Wie oft nimmst du dir Zeit für dich selbst?',a:['Täglich','Oft','Manchmal','Selten','Nie'],s:[1,2,3,4,5]},
+          {q:'Wie häufig fühlst du dich energielos?',a:['Nie','Selten','Manchmal','Oft','Ständig'],s:[1,2,3,4,5]},
+          {q:'Wie gut kannst du Prioritäten setzen?',a:['Sehr gut','Gut','Mittel','Schwer','Sehr schwer'],s:[1,2,3,4,5]}
         ]
       },
       en: {
@@ -289,7 +523,9 @@
     const iqResult = document.getElementById('iqResult');
     const aiTip = document.getElementById('aiTip');
 
-    let iqIndex = 0; let iqScore = 0;
+  let iqIndex = 0; let iqScore = 0;
+  // track user's chosen answers for breakdown
+  let iqUserAnswers = [];
 
     function getIQ(){ return i18n[getLang()].iq; }
 
@@ -329,7 +565,29 @@
         globalInfo.innerHTML = `🌍 <strong>${getLang()==='de' ? 'Weltweite Einstufung' : 'Global Ranking'}:</strong> ${globalRank}<br>🧠 ${compareTxt}`;
         iqResult.insertAdjacentElement('afterend', globalInfo);
 
-        saveResult({ type:'iq', score: iqScore, total: arr.length, ts: Date.now(), lang:getLang() });
+        // build details array showing each question, chosen answer and correctness
+        const details = arr.map((q, idx) => ({
+          q: q.q,
+          choices: q.a,
+          chosenIndex: typeof iqUserAnswers[idx] === 'number' ? iqUserAnswers[idx] : null,
+          correctIndex: q.c,
+          correct: typeof iqUserAnswers[idx] === 'number' ? (iqUserAnswers[idx] === q.c) : false
+        }));
+
+        saveResult({ type:'iq', score: iqScore, total: arr.length, ts: Date.now(), lang:getLang(), details });
+        // also render a detailed breakdown below the result
+        const breakdown = document.createElement('div');
+        breakdown.style.marginTop = '1rem';
+        breakdown.innerHTML = '<h4 style="color:var(--accent);margin-bottom:.4rem">Detailierte Auswertung</h4>' +
+          details.map((d,i)=>{
+            const chosen = d.chosenIndex!==null ? d.choices[d.chosenIndex] : '—';
+            const correct = d.choices[d.correctIndex];
+            const ok = d.correct ? '✅' : '❌';
+            return `<div style="text-align:left;padding:.4rem;border-radius:8px;margin-bottom:.25rem;background:rgba(255,255,255,0.02)"><strong>Frage ${i+1}:</strong> ${d.q}<br><em>Deine Antwort:</em> ${chosen} ${ok} <br><em>Richtig:</em> ${correct}</div>`;
+          }).join('');
+        iqResult.insertAdjacentElement('afterend', breakdown);
+        // reset user answers for next run
+        iqUserAnswers = [];
         updateStatsDisplay();
         return;
       }
@@ -346,6 +604,8 @@
       iqContainer.querySelectorAll('button.option').forEach(btn=>{
         btn.addEventListener('click',()=>{
           const chosen = Number(btn.getAttribute('data-i'));
+          // store chosen answer for this question
+          iqUserAnswers[iqIndex] = chosen;
           if(chosen === q.c) iqScore++;
           iqIndex++;
           renderIQ();
@@ -381,16 +641,21 @@
         btn.addEventListener('click',()=>{
           const qIndex = Number(btn.getAttribute('data-question'));
           const score  = Number(btn.getAttribute('data-score'));
-          psyAnswers[qIndex] = score;
+            // store chosen index and score for details
+            const chosenIndex = Array.from(btn.parentElement.querySelectorAll('button.option')).indexOf(btn);
+            if(!psyAnswers[qIndex]) psyAnswers[qIndex] = {};
+            psyAnswers[qIndex] = { chosenIndex, score, label: btn.textContent };
 
           if(psyAnswers.filter(v=>v!==undefined).length === getPsy().length){
-            const total = psyAnswers.reduce((a,b)=>a+b,0);
-            const lvl = i18n[getLang()].ui.results.psycheLevel(total);
-            psyResult.textContent = lvl;
-            const tip = i18n[getLang()].ui.ai.psy(lvl);
-            aiTip.textContent = '🤖 ' + tip;
-            saveResult({ type:'psy', level: lvl, score: total, ts: Date.now(), lang:getLang() });
-            updateStatsDisplay();
+              const total = psyAnswers.reduce((a,b)=>a + (b.score||0),0);
+              const lvl = i18n[getLang()].ui.results.psycheLevel(total);
+              psyResult.textContent = lvl;
+              const tip = i18n[getLang()].ui.ai.psy(lvl);
+              aiTip.textContent = '🤖 ' + tip;
+              // build details for psyche
+              const psyDetails = getPsy().map((item, idx) => ({ q: item.q, chosen: psyAnswers[idx] ? psyAnswers[idx].label : null, score: psyAnswers[idx] ? psyAnswers[idx].score : null }));
+              saveResult({ type:'psy', level: lvl, score: total, ts: Date.now(), lang:getLang(), details: psyDetails });
+              updateStatsDisplay();
           }
         });
       });
@@ -410,6 +675,8 @@
       hist.push(entry);
       if(hist.length > 200) hist.shift();
       localStorage.setItem('history', JSON.stringify(hist));
+      // Update stats immediately after saving so leaderboard refreshes
+      try{ updateStatsDisplay(); }catch(e){ /* ignore if UI not ready yet */ }
     }
 
     function updateStatsDisplay(){
@@ -429,15 +696,106 @@
         else if(entry.type==='psy') line = `Psyche: ${entry.level} (Score ${entry.score})`;
         const li = document.createElement('li');
         const date = new Date(entry.ts).toLocaleString();
-        li.textContent = `${date} – ${line}`;
+        // main text
+        const mainSpan = document.createElement('span');
+        mainSpan.textContent = `${date} – ${line}`;
+        li.appendChild(mainSpan);
+
+        // details toggle if available
+        if(entry.details && Array.isArray(entry.details) && entry.details.length){
+          const detailsBtn = document.createElement('button');
+          detailsBtn.className = 'small';
+          detailsBtn.style.marginLeft = '0.6rem';
+          detailsBtn.textContent = 'Details';
+          const detailsDiv = document.createElement('div');
+          detailsDiv.style.display = 'none';
+          detailsDiv.style.marginTop = '0.5rem';
+          detailsDiv.style.textAlign = 'left';
+          // build html for details depending on type
+          if(entry.type === 'iq'){
+            detailsDiv.innerHTML = entry.details.map((d,i)=>{
+              const chosen = (d.chosenIndex!==null && d.choices[d.chosenIndex]) ? d.choices[d.chosenIndex] : '—';
+              const correct = d.choices[d.correctIndex];
+              const ok = d.correct ? '✅' : '❌';
+              return `<div style="padding:.3rem;border-radius:6px;margin-bottom:.2rem;background:rgba(255,255,255,0.02)"><strong>Q${i+1}:</strong> ${d.q}<br><em>Deine:</em> ${chosen} ${ok} <em>Richtig:</em> ${correct}</div>`;
+            }).join('');
+          } else if(entry.type === 'psy'){
+            detailsDiv.innerHTML = entry.details.map((d,i)=>{
+              return `<div style="padding:.3rem;border-radius:6px;margin-bottom:.2rem;background:rgba(255,255,255,0.02)"><strong>Q${i+1}:</strong> ${d.q}<br><em>Antwort:</em> ${d.chosen} <em>(Score ${d.score})</em></div>`;
+            }).join('');
+          }
+
+          detailsBtn.addEventListener('click', ()=>{
+            detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
+            detailsBtn.textContent = detailsDiv.style.display === 'none' ? 'Details' : 'Schließen';
+          });
+          li.appendChild(detailsBtn);
+          li.appendChild(detailsDiv);
+        }
+
         historyList.appendChild(li);
       });
+
+      // Highscore IQ
+      const highscoreIQ = document.getElementById('highscoreIQ');
+      if (highscoreIQ) {
+        highscoreIQ.innerHTML = '';
+  const iqScores = hist.filter(e=>e.type==='iq').map(e=>({score:e.score,total:e.total,date:e.ts}));
+  // Sort by score desc, then by most recent date
+  iqScores.sort((a,b)=> (b.score - a.score) || (b.date - a.date));
+        iqScores.slice(0,5).forEach(e=>{
+          const li = document.createElement('li');
+          li.textContent = `${e.score} / ${e.total} (${new Date(e.date).toLocaleDateString()})`;
+          highscoreIQ.appendChild(li);
+        });
+        if(iqScores.length===0){
+          const li = document.createElement('li');
+          li.textContent = '–';
+          highscoreIQ.appendChild(li);
+        }
+      }
+
+      // Highscore Psyche
+      const highscorePsy = document.getElementById('highscorePsy');
+      if (highscorePsy) {
+        highscorePsy.innerHTML = '';
+  const psyScores = hist.filter(e=>e.type==='psy').map(e=>({score:e.score,level:e.level,date:e.ts}));
+  // For psyche, lower score means better (more relaxed) — show best (lowest) first, tiebreak by most recent
+  psyScores.sort((a,b)=> (a.score - b.score) || (b.date - a.date));
+        psyScores.slice(0,5).forEach(e=>{
+          const li = document.createElement('li');
+          li.textContent = `${e.level} (${e.score}) (${new Date(e.date).toLocaleDateString()})`;
+          highscorePsy.appendChild(li);
+        });
+        if(psyScores.length===0){
+          const li = document.createElement('li');
+          li.textContent = '–';
+          highscorePsy.appendChild(li);
+        }
+      }
     }
 
     clearDataBtn.addEventListener('click',()=>{
       localStorage.removeItem('history');
       updateStatsDisplay();
     });
+
+    // Demo / Seed data for testing the leaderboard
+    const seedDemoBtn = document.getElementById('seedDemoBtn');
+    if(seedDemoBtn){
+      seedDemoBtn.addEventListener('click', ()=>{
+        const sample = [
+          {type:'iq', score:18, total:20, ts: Date.now()-86400000*2, lang:'de'},
+          {type:'iq', score:15, total:20, ts: Date.now()-86400000*5, lang:'de'},
+          {type:'iq', score:20, total:20, ts: Date.now()-86400000*1, lang:'de'},
+          {type:'psy', level:'Sehr entspannt', score:16, ts: Date.now()-86400000*3, lang:'de'},
+          {type:'psy', level:'Leichte Anspannung', score:30, ts: Date.now()-86400000*6, lang:'de'},
+          {type:'psy', level:'Sehr entspannt', score:18, ts: Date.now()-86400000*1, lang:'de'}
+        ];
+        localStorage.setItem('history', JSON.stringify(sample));
+        updateStatsDisplay();
+      });
+    }
 
     // =====================
     // Start Button Verhalten
@@ -472,12 +830,28 @@
 
     langSelect.addEventListener('change', ()=> setLang(langSelect.value));
 
-    // Initialisieren
-    setLang(getLang());
-    renderPsy();
+  // Initialisieren
+  setLang(getLang());
+  renderPsy();
+  // Populate stats/highscores on load
+  try{ updateStatsDisplay(); }catch(e){ /* ignore if elements not ready */ }
+    
+    // Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('ServiceWorker registration successful');
+          })
+          .catch(err => {
+            console.log('ServiceWorker registration failed: ', err);
+          });
+      });
+    }
   </script>
 </body>
 </html>
+
 
 
 
