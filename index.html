@@ -285,8 +285,11 @@
   <header>
     <div class="lang-switch">
       <select id="langSelect" aria-label="Language">
-        <option value="de" selected>🇩🇪 DE</option>
-        <option value="en">🇬🇧 EN</option>
+        <option value="de" selected>🇩🇪 Deutsch</option>
+        <option value="en">🇬🇧 English</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="tr">🇹🇷 Türkçe</option>
       </select>
     </div>
     <p class="quote">„Der Mensch ist der Mittelpunkt der Welt, weil er denkt.“ – Ibn Sina (Avicenna)</p>
@@ -381,7 +384,7 @@
         </div>
 
         <div class="stats-block">
-          <h3>🏆 Highscore</h3>
+          <h3><img src="icons/icon-152x152.png" alt="logo" style="width:22px;height:22px;vertical-align:middle;border-radius:4px;margin-right:.4rem;"> 🏆 Highscore</h3>
           <div><strong>Beste IQ‑Scores:</strong>
             <ol id="highscoreIQ" class="history-list"></ol>
           </div>
@@ -473,7 +476,14 @@
           {q:'Ein Zug fährt 250 km/h. Wie weit kommt er in 2 Stunden?',a:['400km','500km','600km'],c:1},
           {q:'Was ist das Gegenteil von "optimistisch"?',a:['realistisch','pessimistisch','skeptisch'],c:1},
           {q:'Welche Zahl ist durch 2, 3 und 4 teilbar?',a:['12','18','24'],c:2},
-          {q:'Was ergibt (4 × 4) × (2 × 2)?',a:['48','64','96'],c:1}
+          {q:'Was ergibt (4 × 4) × (2 × 2)?',a:['48','64','96'],c:1},
+          {q:'Wenn 3 Äpfel 2€ kosten, wie viel kosten 9 Äpfel?',a:['6€','9€','12€'],c:0},
+          {q:'Vervollständige: A, C, F, J, ?',a:['O','N','M'],c:1},
+          {q:'Was ist 1000 geteilt durch 25?',a:['25','40','75'],c:1},
+          {q:'Welche Form hat vier Seiten und alle Winkel 90°?',a:['Rechteck','Raute','Dreieck'],c:0},
+          {q:'Vervollständige die Reihe: 5,10,20,40,?',a:['50','60','80'],c:2},
+          {q:'Welche Zahl ist Prim (kleinste Zahl größer als 1)?',a:['2','1','0'],c:0},
+          {q:'Was ist die Quadratwurzel von 169?',a:['12','13','14'],c:1}
         ],
         psy: [
           {q:'Wie oft fühlst du dich unter Druck?',a:['Nie','Selten','Manchmal','Oft','Sehr oft'],s:[1,2,3,4,5]},
@@ -491,7 +501,12 @@
           {q:'Wie gut kannst du "Nein" sagen?',a:['Sehr gut','Gut','Mittel','Schwer','Sehr schwer'],s:[1,2,3,4,5]},
           {q:'Wie oft nimmst du dir Zeit für dich selbst?',a:['Täglich','Oft','Manchmal','Selten','Nie'],s:[1,2,3,4,5]},
           {q:'Wie häufig fühlst du dich energielos?',a:['Nie','Selten','Manchmal','Oft','Ständig'],s:[1,2,3,4,5]},
-          {q:'Wie gut kannst du Prioritäten setzen?',a:['Sehr gut','Gut','Mittel','Schwer','Sehr schwer'],s:[1,2,3,4,5]}
+          {q:'Wie gut kannst du Prioritäten setzen?',a:['Sehr gut','Gut','Mittel','Schwer','Sehr schwer'],s:[1,2,3,4,5]},
+          {q:'Wie schnell erholst du dich von Stress?',a:['Sofort','Schnell','Mäßig','Langsam','Sehr langsam'],s:[1,2,3,4,5]},
+          {q:'Wie oft nimmst du Pausen während der Arbeit?',a:['Regelmäßig','Oft','Manchmal','Selten','Nie'],s:[1,2,3,4,5]},
+          {q:'Wie gut planst du deinen Tag im Voraus?',a:['Sehr gut','Gut','Okay','Schwach','Gar nicht'],s:[1,2,3,4,5]},
+          {q:'Wie sehr beeinflusst Schlaf deine Leistungsfähigkeit?',a:['Gar nicht','Wenig','Mittel','Stark','Sehr stark'],s:[1,2,3,4,5]},
+          {q:'Wie oft fühlst du dich energiegeladen?',a:['Täglich','Mehrmals/Woche','Manchmal','Selten','Nie'],s:[1,2,3,4,5]}
         ]
       },
       en: {
@@ -520,7 +535,14 @@
           {q:'What is 12 × 12?',a:['124','144','132'],c:1},
           {q:'Square root of 81?',a:['7','8','9'],c:2},
           {q:'How many seconds in an hour?',a:['3600','6000','1800'],c:0},
-          {q:'If all roses are flowers and some flowers wither quickly, what follows?',a:['All roses wither quickly','Some roses wither quickly','No roses wither'],c:1}
+          {q:'If all roses are flowers and some flowers wither quickly, what follows?',a:['All roses wither quickly','Some roses wither quickly','No roses wither'],c:1},
+          {q:'If 4 pens cost $3, how much for 12 pens?',a:['$6','$9','$12'],c:1},
+          {q:'Which word does not belong: apple, banana, carrot, orange?',a:['carrot','banana','orange'],c:0},
+          {q:'What is 15 × 15?',a:['215','225','235'],c:1},
+          {q:'Complete the sequence: 1,4,9,16,?',a:['20','25','36'],c:1},
+          {q:'7 × 8 + 3 = ?',a:['53','56','59'],c:2},
+          {q:'What is the square root of 169?',a:['12','13','14'],c:1},
+          {q:'Which shape has four equal sides and opposite angles equal?',a:['Square','Rectangle','Parallelogram'],c:0}
         ],
         psy: [
           {q:'How often do you feel under pressure?',a:['Never','Rarely','Sometimes','Often','Very often'],s:[1,2,3,4,5]},
@@ -530,10 +552,17 @@
           {q:'How often do you ruminate?',a:['Never','Rarely','Sometimes','Often','Constantly'],s:[1,2,3,4,5]},
           {q:'How well can you focus without distraction?',a:['Very well','Well','Okay','Hard','Not at all'],s:[1,2,3,4,5]},
           {q:'How balanced is your mood?',a:['Very','Quite','Partly','Rather not','Not at all'],s:[1,2,3,4,5]},
-          {q:'What is your current stress level?',a:['Very low','Low','Medium','High','Very high'],s:[1,2,3,4,5]}
+          {q:'What is your current stress level?',a:['Very low','Low','Medium','High','Very high'],s:[1,2,3,4,5]},
+          {q:'How well do you manage interruptions?',a:['Very well','Well','Okay','Poor','Very poor'],s:[1,2,3,4,5]},
+          {q:'How regular is your sleep schedule?',a:['Very regular','Mostly','Sometimes','Rarely','Never'],s:[1,2,3,4,5]},
+          {q:'How often do you exercise per week?',a:['Daily','Several times','Once','Rarely','Never'],s:[1,2,3,4,5]},
+          {q:'How motivated do you feel for daily tasks?',a:['Very motivated','Motivated','Neutral','Less motivated','Unmotivated'],s:[1,2,3,4,5]}
         ]
       }
     };
+
+    // Language flag mapping for leaderboard and UI
+    const langFlags = { de: '🇩🇪', en: '🇬🇧', fr: '🇫🇷', es: '🇪🇸', tr: '🇹🇷' };
 
     // =====================
     // Sprache speichern/laden
@@ -541,6 +570,13 @@
     const langSelect = document.getElementById('langSelect');
     const getLang = () => localStorage.getItem('lang') || 'de';
     const setLang = (l)=>{ localStorage.setItem('lang', l); langSelect.value = l; applyLang(); };
+
+    // Helpers to safely get localized content (fallback to 'en')
+    function getLocale(key) {
+      return (i18n[getLang()] && i18n[getLang()].ui && i18n[getLang()].ui[key]) ? i18n[getLang()].ui[key] : i18n['en'].ui[key];
+    }
+    function getIQ(){ return (i18n[getLang()] && i18n[getLang()].iq) ? i18n[getLang()].iq : i18n['en'].iq; }
+    function getPsy(){ return (i18n[getLang()] && i18n[getLang()].psy) ? i18n[getLang()].psy : i18n['en'].psy; }
 
     // =====================
     // Screen Handling / Navigation
@@ -588,7 +624,7 @@
   // track user's chosen answers for breakdown
   let iqUserAnswers = [];
 
-    function getIQ(){ return i18n[getLang()].iq; }
+  // (use safer getIQ above)
 
     function renderIQ() {
       const arr = getIQ();
@@ -700,7 +736,7 @@
     const psyResult = document.getElementById('psyResult');
     let psyAnswers = [];
 
-    function getPsy(){ return i18n[getLang()].psy; }
+  // (use safer getPsy above)
 
     function renderPsy(){
       psyContainer.innerHTML = '';
@@ -900,12 +936,13 @@
       const highscoreIQ = document.getElementById('highscoreIQ');
       if (highscoreIQ) {
         highscoreIQ.innerHTML = '';
-  const iqScores = hist.filter(e=>e.type==='iq').map(e=>({score:e.score,total:e.total,date:e.ts}));
+  const iqScores = hist.filter(e=>e.type==='iq').map(e=>({score:e.score,total:e.total,date:e.ts, lang: e.lang || 'de'}));
   // Sort by score desc, then by most recent date
   iqScores.sort((a,b)=> (b.score - a.score) || (b.date - a.date));
         iqScores.slice(0,5).forEach(e=>{
           const li = document.createElement('li');
-          li.textContent = `${e.score} / ${e.total} (${new Date(e.date).toLocaleDateString()})`;
+          const flag = langFlags[e.lang] || '🏳️';
+          li.innerHTML = `<img src="icons/icon-152x152.png" style="width:18px;height:18px;border-radius:4px;vertical-align:middle;margin-right:.4rem"> <span style="margin-right:.4rem">${flag}</span> <strong>${e.score} / ${e.total}</strong> <span style="color:var(--muted); margin-left:.6rem">(${new Date(e.date).toLocaleDateString()})</span>`;
           highscoreIQ.appendChild(li);
         });
         if(iqScores.length===0){
@@ -919,12 +956,13 @@
       const highscorePsy = document.getElementById('highscorePsy');
       if (highscorePsy) {
         highscorePsy.innerHTML = '';
-  const psyScores = hist.filter(e=>e.type==='psy').map(e=>({score:e.score,level:e.level,date:e.ts}));
+  const psyScores = hist.filter(e=>e.type==='psy').map(e=>({score:e.score,level:e.level,date:e.ts, lang: e.lang || 'de'}));
   // For psyche, lower score means better (more relaxed) — show best (lowest) first, tiebreak by most recent
   psyScores.sort((a,b)=> (a.score - b.score) || (b.date - a.date));
         psyScores.slice(0,5).forEach(e=>{
           const li = document.createElement('li');
-          li.textContent = `${e.level} (${e.score}) (${new Date(e.date).toLocaleDateString()})`;
+          const flag = langFlags[e.lang] || '🏳️';
+          li.innerHTML = `<img src="icons/icon-152x152.png" style="width:18px;height:18px;border-radius:4px;vertical-align:middle;margin-right:.4rem"> <span style="margin-right:.4rem">${flag}</span> <strong>${e.level}</strong> <span style="color:var(--muted); margin-left:.6rem">(${e.score})</span> <span style="color:var(--muted); margin-left:.6rem">(${new Date(e.date).toLocaleDateString()})</span>`;
           highscorePsy.appendChild(li);
         });
         if(psyScores.length===0){
@@ -1090,23 +1128,26 @@
     });
 
     // =====================
-    // Sprache anwenden
+    // Sprache anwenden (sichere Fallbacks)
     // =====================
     function applyLang(){
-      const L = i18n[getLang()].ui;
+      // Use the selected language UI object if available, otherwise fall back to English
+      const L = (i18n[getLang()] && i18n[getLang()].ui) ? i18n[getLang()].ui : i18n['en'].ui;
       document.getElementById('tabStart').textContent = L.start;
       document.getElementById('tabIQ').textContent = L.iq;
       document.getElementById('tabPsy').textContent = L.psy;
       document.getElementById('tabStats').textContent = L.stats;
       document.getElementById('hintLocal').textContent = L.introHint;
-      document.getElementById('liveStatusTitle').textContent = L.live.title;
+      // Some nested properties may not exist in all translations; guard access
+      document.getElementById('liveStatusTitle').textContent = (L.live && L.live.title) ? L.live.title : i18n['en'].ui.live.title;
       document.getElementById('iqTitle').textContent = L.iq;
       document.getElementById('psyTitle').textContent = L.psy;
       document.getElementById('statsTitle').textContent = L.stats;
-      document.getElementById('labelLastIQ').textContent = L.labels.lastIQ;
-      document.getElementById('labelLastPsy').textContent = L.labels.lastPsy;
-      document.getElementById('historyH3').textContent = L.labels.history;
-      renderPsy();
+      document.getElementById('labelLastIQ').textContent = (L.labels && L.labels.lastIQ) ? L.labels.lastIQ : i18n['en'].ui.labels.lastIQ;
+      document.getElementById('labelLastPsy').textContent = (L.labels && L.labels.lastPsy) ? L.labels.lastPsy : i18n['en'].ui.labels.lastPsy;
+      document.getElementById('historyH3').textContent = (L.labels && L.labels.history) ? L.labels.history : i18n['en'].ui.labels.history;
+      // Re-render any language-dependent screens
+      try{ renderPsy(); } catch(e){ console.warn('renderPsy() failed during language apply:', e); }
     }
 
     langSelect.addEventListener('change', ()=> setLang(langSelect.value));
@@ -1132,7 +1173,41 @@
       startStatsAutoUpdate();
     } catch(e){ 
       console.log('Fehler beim Initialisieren der Statistik:', e);
-    }    // Service Worker Registration (relative path for project pages)
+    }
+
+    // --- Anpassbares Zitat (lokal editierbar) ---
+    (function(){
+      const quoteEl = document.querySelector('.quote');
+      if(!quoteEl) return;
+      // Lade gespeichertes Zitat (falls vorhanden)
+      const saved = localStorage.getItem('customQuote');
+      if(saved) quoteEl.textContent = saved;
+
+      // Erstelle Bearbeiten-Button
+      const editBtn = document.createElement('button');
+      editBtn.className = 'small';
+      editBtn.style.marginLeft = '0.6rem';
+      editBtn.style.background = 'linear-gradient(90deg,var(--accent2),var(--accent))';
+      editBtn.textContent = 'Zitat bearbeiten';
+      editBtn.title = 'Zitat anpassen (nur lokal)';
+      editBtn.addEventListener('click', ()=>{
+        const current = quoteEl.textContent || '';
+        const v = prompt('Neues Zitat eingeben (Autor optional):', current);
+        if(v !== null){
+          quoteEl.textContent = v;
+          localStorage.setItem('customQuote', v);
+          // kleine Animation zurücksetzen
+          quoteEl.style.animation = 'none';
+          void quoteEl.offsetWidth;
+          quoteEl.style.animation = 'quoteReveal 2s ease-out';
+        }
+      });
+
+      // Füge Button unter dem Zitat hinzu
+      quoteEl.insertAdjacentElement('afterend', editBtn);
+    })();
+
+    // Service Worker Registration (relative path for project pages)
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js')
@@ -1147,5 +1222,6 @@
   </script>
 </body>
 </html>
+
 
 
