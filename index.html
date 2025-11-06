@@ -1,4 +1,6 @@
 
+
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -27,11 +29,14 @@
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;" />
   
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Chart.js - mit defer für bessere Performance -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Fonts - mit preload für bessere Performance -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  </noscript>
 
   <style>
     /* Theme Variables */
@@ -1671,6 +1676,60 @@
         showAchievement('dailyStreak');
       }
     }
+
+    // Export/Import Event Listeners
+    document.getElementById('exportData')?.addEventListener('click', exportUserData);
+    document.getElementById('importFile')?.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        importUserData(e.target.files[0]);
+      }
+    });
+    document.getElementById('importData')?.addEventListener('click', () => {
+      document.getElementById('importFile').click();
+    });
+
+    // Keyboard Navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const modals = document.querySelectorAll('.modal.show');
+        modals.forEach(modal => modal.classList.remove('show'));
+      }
+    });
+
+    // Accessibility Improvements
+    document.querySelectorAll('button').forEach(button => {
+      if (!button.getAttribute('aria-label')) {
+        button.setAttribute('aria-label', button.textContent.trim());
+      }
+    });
+
+    // Focus Management
+    function trapFocus(element) {
+      const focusableElements = element.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      const firstFocusableElement = focusableElements[0];
+      const lastFocusableElement = focusableElements[focusableElements.length - 1];
+
+      element.addEventListener('keydown', function(e) {
+        if (e.key === 'Tab') {
+          if (e.shiftKey) {
+            if (document.activeElement === firstFocusableElement) {
+              lastFocusableElement.focus();
+              e.preventDefault();
+            }
+          } else {
+            if (document.activeElement === lastFocusableElement) {
+              firstFocusableElement.focus();
+              e.preventDefault();
+            }
+          }
+        }
+      });
+    }
+
+    // Apply focus trap to modals
+    document.querySelectorAll('.modal').forEach(trapFocus);
   </script>
 </body>
 </html>
