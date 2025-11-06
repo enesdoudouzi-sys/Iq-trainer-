@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -10,7 +11,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="IQ Trainer">
-  <meta name="description" content="Trainieren Sie täglich Ihren IQ und Ihre Konzentration">
+  <meta name="description" content="Trainiere täglich deinen IQ und deine Konzentration">
   <meta name="theme-color" content="#00ffcc">
 
   <!-- Apple Touch Icons -->
@@ -33,9 +34,133 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    :root{
-      --bg:#050505;--accent:#00ffcc;--accent2:#00c3ff;--text:#f0f0f0;--muted:#888;--danger:#ff4d6a;--card-bg:rgba(255,255,255,0.05);--card-border:rgba(0,255,200,0.15);
+    /* Theme Variables */
+    :root[data-theme="dark"] {
+      --bg:#050505;
+      --bg-gradient:radial-gradient(circle at top,#0a0a0a,#000);
+      --accent:#00ffcc;
+      --accent2:#00c3ff;
+      --text:#f0f0f0;
+      --muted:#888;
+      --danger:#ff4d6a;
+      --card-bg:rgba(255,255,255,0.05);
+      --card-border:rgba(0,255,200,0.15);
+      --tutorial-bg:rgba(0,0,0,0.95);
     }
+    
+    :root[data-theme="light"] {
+      --bg:#ffffff;
+      --bg-gradient:radial-gradient(circle at top,#f0f0f0,#ffffff);
+      --accent:#00aa88;
+      --accent2:#0088cc;
+      --text:#222222;
+      --muted:#666666;
+      --danger:#cc3355;
+      --card-bg:rgba(0,0,0,0.02);
+      --card-border:rgba(0,170,136,0.15);
+      --tutorial-bg:rgba(255,255,255,0.95);
+    }
+
+    /* Tutorial Styles */
+    .tutorial-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--tutorial-bg);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .tutorial-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .tutorial-content {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 500px;
+      text-align: center;
+      position: relative;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    .tutorial-step {
+      display: none;
+    }
+
+    .tutorial-step.active {
+      display: block;
+    }
+
+    .tutorial-buttons {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .achievement-popup {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transform: translateX(120%);
+      transition: transform 0.3s ease;
+      z-index: 100;
+    }
+
+    .achievement-popup.show {
+      transform: translateX(0);
+    }
+
+    .achievement-icon {
+      font-size: 2rem;
+    }
+
+    .achievement-info {
+      flex: 1;
+    }
+
+    .achievement-title {
+      color: var(--accent);
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .achievement-desc {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin: 0.2rem 0 0 0;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Existing styles... */
     *{box-sizing:border-box;transition:all .3s ease;}
     body{margin:0;background:radial-gradient(circle at top,#0a0a0a,#000);color:var(--text);font-family:'Poppins',sans-serif;overflow-x:hidden;}
     header{padding:3rem 1rem 1rem;text-align:center;position:relative;}
@@ -282,6 +407,39 @@
   </style>
 </head>
 <body>
+  <!-- Tutorial Overlay -->
+  <div class="tutorial-overlay" id="tutorial">
+    <div class="tutorial-content">
+      <div class="tutorial-step" data-step="1">
+        <h2>Willkommen beim IQ & Focus Trainer! 👋</h2>
+        <p>Lass uns gemeinsam deine mentalen Fähigkeiten trainieren. Ich zeige dir kurz, wie alles funktioniert.</p>
+      </div>
+      <div class="tutorial-step" data-step="2">
+        <h2>IQ Tests 🧠</h2>
+        <p>Fordere dein logisches Denken heraus. Wähle verschiedene Schwierigkeitsgrade und Kategorien.</p>
+      </div>
+      <div class="tutorial-step" data-step="3">
+        <h2>Psyche-Check 🎯</h2>
+        <p>Behalte dein mentales Wohlbefinden im Blick und erhalte personalisierte Tipps.</p>
+      </div>
+      <div class="tutorial-step" data-step="4">
+        <h2>Statistiken & Erfolge 📊</h2>
+        <p>Verfolge deinen Fortschritt und sammle Achievements für besondere Leistungen.</p>
+      </div>
+      <div class="tutorial-buttons">
+        <button class="option" id="tutorialPrev">Zurück</button>
+        <button class="option" id="tutorialNext">Weiter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Theme & Language Controls -->
+  <div class="theme-controls" style="position:fixed;top:1rem;left:1rem;z-index:100;display:flex;gap:1rem;">
+    <button id="themeToggle" class="option small" style="min-width:auto;padding:0.4rem">
+      <span id="themeIcon">🌙</span>
+    </button>
+  </div>
+
   <header>
     <div class="lang-switch">
       <select id="langSelect" aria-label="Language">
@@ -305,6 +463,29 @@
         <button data-screen="psyTest" class="option" id="tabPsy">Psyche</button>
         <button data-screen="daily" class="option" id="tabDaily">🎯 Daily</button>
         <button data-screen="stats" class="option" id="tabStats">Statistik</button>
+      </div>
+
+      <!-- Difficulty & Category Selection -->
+      <div id="testSettings" style="display:none;margin-bottom:2rem;animation:fadeIn 0.5s ease;">
+        <div class="difficulty-select" style="margin-bottom:1rem;">
+          <h3 style="color:var(--accent);margin-bottom:0.8rem;">Schwierigkeitsgrad</h3>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <button class="option small" data-difficulty="easy">Einfach</button>
+            <button class="option small" data-difficulty="medium">Mittel</button>
+            <button class="option small" data-difficulty="hard">Schwer</button>
+          </div>
+        </div>
+        
+        <div class="category-select">
+          <h3 style="color:var(--accent);margin-bottom:0.8rem;">Kategorie</h3>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <button class="option small" data-category="logic">🧩 Logik</button>
+            <button class="option small" data-category="math">🔢 Mathematik</button>
+            <button class="option small" data-category="pattern">📊 Muster</button>
+            <button class="option small" data-category="verbal">📚 Sprache</button>
+            <button class="option small" data-category="memory">🧠 Gedächtnis</button>
+          </div>
+        </div>
       </div>
 
       <!-- INTRO / START -->
@@ -509,6 +690,123 @@
           {q:'Wie oft fühlst du dich energiegeladen?',a:['Täglich','Mehrmals/Woche','Manchmal','Selten','Nie'],s:[1,2,3,4,5]}
         ]
       },
+      es: {
+        ui: {
+          start:"Comenzar", iq:"Test de CI", psy:"Psique", stats:"Estadísticas",
+          introHint:"Tus resultados se almacenan solo en tu navegador.",
+          live:{ title:"Estado en Vivo", ready:"Listo.", activeIQ:"Test de CI", activePsy:"Test Psique" },
+          labels:{ lastIQ:"Último CI:", lastPsy:"Último Nivel Psique:", history:"Historial" },
+          results:{
+            iq:(s,t)=>`Tu puntuación CI: ${s} / ${t}`,
+            psycheLevel:(tot)=> tot<=12?"Muy relajado": tot<=20?"Tensión leve":"Estrés elevado"
+          },
+          ai:{
+            iq:(s,t)=> s/t>=0.8 ? "¡Excelente! Lógica y patrones dominados." : s/t>=0.5 ? "Buena base. Mejora velocidad y precisión." : "Volver a lo básico: cálculo mental y patrones.",
+            psy:(lvl)=> lvl.includes("elevado") ? "Intenta 5min de respiración + caminar." : lvl.includes("leve") ? "45min de concentración, luego micro-pausa." : "Estable – mantén tus rutinas."
+          },
+          compare:{ better:(c)=>`Por encima del promedio vs ${c}.`, avg:(c)=>`En el promedio de ${c}.`, worse:(c)=>`Por debajo del promedio vs ${c}.` }
+        },
+        iq: [
+          {q:"¿Cuánto es 9 × 9?",a:["72","81","99"],c:1},
+          {q:"¿Cuánto es 5³?",a:["25","125","225"],c:1},
+          {q:"¿Qué número sigue: 2,4,8,16,?",a:["24","32","36"],c:1},
+          {q:"Elige lo opuesto a \"caótico\"",a:["ordenado","agitado","nervioso"],c:0},
+          {q:"¿Cuánto es el 20% de 400?",a:["40","60","80"],c:2},
+          {q:"Completa: 3,6,9,12,?",a:["13","14","15"],c:2},
+          {q:"¿Cuánto es 12 × 12?",a:["124","144","132"],c:1},
+          {q:"¿Raíz cuadrada de 81?",a:["7","8","9"],c:2},
+          {q:"¿Cuántos segundos hay en una hora?",a:["3600","6000","1800"],c:0},
+          {q:"Si 4 bolígrafos cuestan 3€, ¿cuánto cuestan 12?",a:["6€","9€","12€"],c:1}
+        ],
+        psy: [
+          {q:"¿Con qué frecuencia te sientes bajo presión?",a:["Nunca","Raramente","A veces","A menudo","Muy a menudo"],s:[1,2,3,4,5]},
+          {q:"¿Puedes desconectar fácilmente?",a:["Sí","Mayormente","A veces","Raramente","No"],s:[1,2,3,4,5]},
+          {q:"¿Cómo manejas los conflictos?",a:["Muy estable","Estable","Inseguro","Inestable","Muy inestable"],s:[1,2,3,4,5]},
+          {q:"¿Cómo te sientes por la mañana?",a:["Muy descansado","Bien","Regular","Cansado","Agotado"],s:[1,2,3,4,5]},
+          {q:"¿Con qué frecuencia te preocupas?",a:["Nunca","Raramente","A veces","A menudo","Constantemente"],s:[1,2,3,4,5]},
+          {q:"Tu concentración sin distracciones es:",a:["Excelente","Buena","Regular","Difícil","Imposible"],s:[1,2,3,4,5]},
+          {q:"¿Tu estado de ánimo es equilibrado?",a:["Mucho","Bastante","A veces","No mucho","Nada"],s:[1,2,3,4,5]},
+          {q:"¿Cuál es tu nivel de estrés actual?",a:["Muy bajo","Bajo","Medio","Alto","Muy alto"],s:[1,2,3,4,5]}
+        ]
+      },
+      tr: {
+        ui: {
+          start:"Başla", iq:"IQ Testi", psy:"Psikoloji", stats:"İstatistikler",
+          introHint:"Sonuçlarınız yalnızca tarayıcınızda saklanır.",
+          live:{ title:"Canlı Durum", ready:"Hazır.", activeIQ:"IQ Testi", activePsy:"Psikoloji Testi" },
+          labels:{ lastIQ:"Son IQ Puanı:", lastPsy:"Son Psikoloji Seviyesi:", history:"Geçmiş" },
+          results:{
+            iq:(s,t)=>`IQ puanınız: ${s} / ${t}`,
+            psycheLevel:(tot)=> tot<=12?"Çok rahat": tot<=20?"Hafif gerginlik":"Yüksek stres"
+          },
+          ai:{
+            iq:(s,t)=> s/t>=0.8 ? "Harika! Güçlü mantık ve örüntüler." : s/t>=0.5 ? "Sağlam temel. Hız ve doğruluğu geliştir." : "Temellere dön: zihinsel matematik ve örüntüler.",
+            psy:(lvl)=> lvl.includes("Yüksek") ? "5 dakika nefes + kısa yürüyüş dene." : lvl.includes("Hafif") ? "45 dakika odaklan, sonra mikro-mola." : "Stabil – rutinleri koru."
+          },
+          compare:{ better:(c)=>`${c} ortalamasının üstünde.`, avg:(c)=>`${c} ortalamasında.`, worse:(c)=>`${c} ortalamasının altında.` }
+        },
+        iq: [
+          {q:"9 × 9 kaçtır?",a:["72","81","99"],c:1},
+          {q:"5³ kaçtır?",a:["25","125","225"],c:1},
+          {q:"Hangi sayı gelir: 2,4,8,16,?",a:["24","32","36"],c:1},
+          {q:"\"Kaotik\"in zıttını seçin",a:["düzenli","telaşlı","gergin"],c:0},
+          {q:"400\'ün %20\'si kaçtır?",a:["40","60","80"],c:2},
+          {q:"Tamamlayın: 3,6,9,12,?",a:["13","14","15"],c:2},
+          {q:"12 × 12 kaçtır?",a:["124","144","132"],c:1},
+          {q:"81\'in karekökü?",a:["7","8","9"],c:2},
+          {q:"Bir saatte kaç saniye vardır?",a:["3600","6000","1800"],c:0},
+          {q:"4 kalem 3TL ise, 12 kalem kaç TL?",a:["6TL","9TL","12TL"],c:1}
+        ],
+        psy: [
+          {q:"Ne sıklıkla baskı altında hissediyorsunuz?",a:["Hiçbir zaman","Nadiren","Bazen","Sık sık","Çok sık"],s:[1,2,3,4,5]},
+          {q:"İşten kopabiliyor musunuz?",a:["Evet","Çoğunlukla","Kısmen","Nadiren","Hayır"],s:[1,2,3,4,5]},
+          {q:"Çatışmaları nasıl yönetiyorsunuz?",a:["Çok stabil","Stabil","Kararsız","Dengesiz","Çok dengesiz"],s:[1,2,3,4,5]},
+          {q:"Sabahları kendinizi nasıl hissediyorsunuz?",a:["Çok dinç","İyi","Orta","Yorgun","Bitkin"],s:[1,2,3,4,5]},
+          {q:"Ne sıklıkla düşüncelere dalıyorsunuz?",a:["Hiçbir zaman","Nadiren","Bazen","Sık sık","Sürekli"],s:[1,2,3,4,5]},
+          {q:"Dikkat dağılmadan odaklanabilme durumunuz:",a:["Çok iyi","İyi","Orta","Zor","İmkansız"],s:[1,2,3,4,5]},
+          {q:"Ruh haliniz dengeli mi?",a:["Çok","Oldukça","Kısmen","Pek değil","Hiç değil"],s:[1,2,3,4,5]},
+          {q:"Mevcut stres seviyeniz nedir?",a:["Çok düşük","Düşük","Orta","Yüksek","Çok yüksek"],s:[1,2,3,4,5]}
+        ]
+      },
+      fr: {
+        ui: {
+          start:"Commencer", iq:"Test de QI", psy:"Psyché", stats:"Statistiques",
+          introHint:"Vos résultats sont stockés uniquement dans votre navigateur.",
+          live:{ title:"Status en Direct", ready:"Prêt.", activeIQ:"Test de QI", activePsy:"Test Psyché" },
+          labels:{ lastIQ:"Dernier Score QI:", lastPsy:"Dernier Niveau Psyché:", history:"Historique" },
+          results:{
+            iq:(s,t)=>`Votre score QI: ${s} / ${t}`,
+            psycheLevel:(tot)=> tot<=12?"Très détendu": tot<=20?"Tension légère":"Stress élevé"
+          },
+          ai:{
+            iq:(s,t)=> s/t>=0.8 ? "Excellent! Logique et motifs maîtrisés." : s/t>=0.5 ? "Bonne base. Améliorez vitesse et précision." : "Retour aux fondamentaux: calcul mental et motifs.",
+            psy:(lvl)=> lvl.includes("élevé") ? "Essayez 5min de respiration + marche." : lvl.includes("légère") ? "45min de concentration, puis micro-pause." : "Stable – gardez vos routines."
+          },
+          compare:{ better:(c)=>`Au-dessus de la moyenne vs ${c}.`, avg:(c)=>`Dans la moyenne de ${c}.`, worse:(c)=>`En dessous de la moyenne vs ${c}.` }
+        },
+        iq: [
+          {q:"Combien fait 9 × 9?",a:["72","81","99"],c:1},
+          {q:"Que vaut 5³?",a:["25","125","225"],c:1},
+          {q:"Quel nombre suit: 2,4,8,16,?",a:["24","32","36"],c:1},
+          {q:"Choisissez l\\'opposé de \"chaotique\"",a:["ordonné","agité","nerveux"],c:0},
+          {q:"Combien vaut 20% de 400?",a:["40","60","80"],c:2},
+          {q:"Complétez: 3,6,9,12,?",a:["13","14","15"],c:2},
+          {q:"Combien fait 12 × 12?",a:["124","144","132"],c:1},
+          {q:"Racine carrée de 81?",a:["7","8","9"],c:2},
+          {q:"Combien de secondes dans une heure?",a:["3600","6000","1800"],c:0},
+          {q:"Si 4 stylos coûtent 3€, combien pour 12 stylos?",a:["6€","9€","12€"],c:1}
+        ],
+        psy: [
+          {q:"À quelle fréquence vous sentez-vous sous pression?",a:["Jamais","Rarement","Parfois","Souvent","Très souvent"],s:[1,2,3,4,5]},
+          {q:"Arrivez-vous à déconnecter facilement?",a:["Oui","La plupart du temps","Parfois","Rarement","Non"],s:[1,2,3,4,5]},
+          {q:"Comment gérez-vous les conflits?",a:["Très stable","Stable","Incertain","Instable","Très instable"],s:[1,2,3,4,5]},
+          {q:"Comment vous sentez-vous le matin?",a:["Très reposé","Bien","Moyen","Fatigué","Épuisé"],s:[1,2,3,4,5]},
+          {q:"À quelle fréquence ruminez-vous?",a:["Jamais","Rarement","Parfois","Souvent","Constamment"],s:[1,2,3,4,5]},
+          {q:"Votre concentration sans distraction?",a:["Excellente","Bonne","Moyenne","Difficile","Impossible"],s:[1,2,3,4,5]},
+          {q:"Votre humeur est-elle équilibrée?",a:["Très","Assez","Parfois","Pas vraiment","Pas du tout"],s:[1,2,3,4,5]},
+          {q:"Quel est votre niveau de stress actuel?",a:["Très bas","Bas","Moyen","Élevé","Très élevé"],s:[1,2,3,4,5]}
+        ]
+      },
       en: {
         ui: {
           start:'Start', iq:'IQ Test', psy:'Psyche', stats:'Stats',
@@ -568,8 +866,13 @@
     // Sprache speichern/laden
     // =====================
     const langSelect = document.getElementById('langSelect');
-    const getLang = () => localStorage.getItem('lang') || 'de';
-    const setLang = (l)=>{ localStorage.setItem('lang', l); langSelect.value = l; applyLang(); };
+    const getLang = () => localStorage.getItem('lang') || 'de'; // Deutsch als Standard
+    const setLang = (l)=>{ 
+      localStorage.setItem('lang', l); 
+      langSelect.value = l; 
+      document.documentElement.lang = l; // HTML lang attribute aktualisieren
+      applyLang(); 
+    };
 
     // Helpers to safely get localized content (fallback to 'en')
     function getLocale(key) {
@@ -1207,21 +1510,171 @@
       quoteEl.insertAdjacentElement('afterend', editBtn);
     })();
 
+    // =====================
+    // Theme Management
+    // =====================
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    
+    // Get/Set Theme
+    const getTheme = () => localStorage.getItem('theme') || 'dark';
+    const setTheme = (theme) => {
+      localStorage.setItem('theme', theme);
+      document.documentElement.dataset.theme = theme;
+      themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+    };
+
+    // Theme Toggle Handler
+    themeToggle.addEventListener('click', () => {
+      const newTheme = getTheme() === 'dark' ? 'light' : 'dark';
+      setTheme(newTheme);
+    });
+
+    // Initialize Theme
+    setTheme(getTheme());
+
+    // =====================
+    // Tutorial System
+    // =====================
+    const tutorial = document.getElementById('tutorial');
+    const tutorialSteps = document.querySelectorAll('.tutorial-step');
+    const tutorialNext = document.getElementById('tutorialNext');
+    const tutorialPrev = document.getElementById('tutorialPrev');
+    let currentStep = 1;
+
+    // Show Tutorial for First-time Users
+    if (!localStorage.getItem('tutorialSeen')) {
+      tutorial.classList.add('active');
+      updateTutorialButtons();
+    }
+
+    function updateTutorialButtons() {
+      tutorialPrev.style.display = currentStep === 1 ? 'none' : 'block';
+      tutorialNext.textContent = currentStep === tutorialSteps.length ? 'Fertig' : 'Weiter';
+      
+      tutorialSteps.forEach((step, i) => {
+        step.classList.toggle('active', i + 1 === currentStep);
+      });
+    }
+
+    tutorialNext.addEventListener('click', () => {
+      if (currentStep < tutorialSteps.length) {
+        currentStep++;
+        updateTutorialButtons();
+      } else {
+        tutorial.classList.remove('active');
+        localStorage.setItem('tutorialSeen', '1');
+      }
+    });
+
+    tutorialPrev.addEventListener('click', () => {
+      if (currentStep > 1) {
+        currentStep--;
+        updateTutorialButtons();
+      }
+    });
+
+    // =====================
+    // Achievement System
+    // =====================
+    const achievements = {
+      firstTest: { icon: '🎯', title: 'Erster Test', desc: 'Du hast deinen ersten Test abgeschlossen!' },
+      perfectScore: { icon: '🏆', title: 'Perfekte Punktzahl', desc: 'Alle Fragen richtig beantwortet!' },
+      speedMaster: { icon: '⚡', title: 'Geschwindigkeitsmeister', desc: 'Test in Rekordzeit abgeschlossen!' },
+      dailyStreak: { icon: '🔥', title: 'Tägliche Serie', desc: 'Du trainierst regelmäßig!' },
+      brainMaster: { icon: '🧠', title: 'Gehirn-Meister', desc: 'Hohe Punktzahl in allen Kategorien!' }
+    };
+
+    function showAchievement(id) {
+      const achievement = achievements[id];
+      if (!achievement) return;
+
+      const popup = document.createElement('div');
+      popup.className = 'achievement-popup';
+      popup.innerHTML = `
+        <div class="achievement-icon">${achievement.icon}</div>
+        <div class="achievement-info">
+          <h4 class="achievement-title">${achievement.title}</h4>
+          <p class="achievement-desc">${achievement.desc}</p>
+        </div>
+      `;
+
+      document.body.appendChild(popup);
+      setTimeout(() => popup.classList.add('show'), 100);
+      setTimeout(() => {
+        popup.classList.remove('show');
+        setTimeout(() => popup.remove(), 300);
+      }, 3000);
+
+      // Save achievement
+      const earned = JSON.parse(localStorage.getItem('achievements') || '[]');
+      if (!earned.includes(id)) {
+        earned.push(id);
+        localStorage.setItem('achievements', JSON.stringify(earned));
+      }
+    }
+
     // Service Worker Registration (relative path for project pages)
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js')
           .then(registration => {
             console.log('ServiceWorker registration successful');
+            
+            // Setup push notifications if supported
+            if ('Notification' in window) {
+              Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                  setupDailyReminder();
+                }
+              });
+            }
           })
           .catch(err => {
             console.log('ServiceWorker registration failed: ', err);
           });
       });
     }
+
+    // Daily reminder setup
+    function setupDailyReminder() {
+      const now = new Date();
+      const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 9, 0, 0); // 9:00 AM tomorrow
+      const delay = tomorrow - now;
+
+      setTimeout(() => {
+        new Notification('Zeit fürs Training! 🧠', {
+          body: 'Dein tägliches IQ-Training wartet auf dich.',
+          icon: 'icons/icon-152x152.png'
+        });
+        setupDailyReminder(); // Schedule next reminder
+      }, delay);
+    }
+
+    // Check achievements after tests
+    function checkAchievements(type, score, total) {
+      const history = JSON.parse(localStorage.getItem('history') || '[]');
+      
+      // First test achievement
+      if (history.length === 1) {
+        showAchievement('firstTest');
+      }
+
+      // Perfect score
+      if (score === total) {
+        showAchievement('perfectScore');
+      }
+
+      // Daily streak (if applicable)
+      const streak = parseInt(localStorage.getItem('daily_streak') || '0');
+      if (streak >= 3) {
+        showAchievement('dailyStreak');
+      }
+    }
   </script>
 </body>
 </html>
+
 
 
 
