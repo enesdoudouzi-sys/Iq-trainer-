@@ -1,6 +1,4 @@
 
-
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -378,6 +376,21 @@
       transition:all 0.3s ease;
       animation:slideIn 0.5s ease-out;
     } 
+    /* Help / Psycho content */
+    .help-block{
+      margin-top:1rem;
+      padding:1rem;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      border-radius:12px;
+      text-align:center;
+    }
+    .breath-circle{
+      width:120px;height:120px;border-radius:50%;margin:0.6rem auto;background:radial-gradient(circle at 30% 30%, var(--accent), var(--accent2));
+      opacity:0.95;transition:transform 4s ease-in-out;
+    }
+    .breath-controls{display:flex;gap:.5rem;justify-content:center;margin-top:.5rem}
+    .transcript{font-size:.95rem;color:var(--muted);text-align:left;margin-top:.8rem;padding:.6rem;border-radius:8px;background:rgba(0,0,0,0.03)}
     .sidebar-line:hover{
       color:var(--accent);
       transform:translateX(5px);
@@ -506,6 +519,11 @@
         <h2 id="iqTitle">IQ‑Test</h2>
         <div id="iqQuestions"></div>
         <p id="iqResult" class="result-line"></p>
+        <div id="iqHelp" class="help-block" aria-live="polite" style="display:none">
+          <!-- Dynamically populated help content for IQ results -->
+          <div id="iqHelpContent"></div>
+          <div class="transcript" id="iqTranscript" style="display:none"></div>
+        </div>
       </section>
 
       <!-- PSYCHE TEST -->
@@ -513,6 +531,10 @@
         <h2 id="psyTitle">Psyche‑Analyse</h2>
         <div id="psyQuestions"></div>
         <p id="psyResult" class="result-line"></p>
+        <div id="psyHelp" class="help-block" aria-live="polite" style="display:none">
+          <div id="psyHelpContent"></div>
+          <div class="transcript" id="psyTranscript" style="display:none"></div>
+        </div>
       </section>
 
       <!-- DAILY CHALLENGE -->
@@ -994,6 +1016,8 @@
         // reset user answers for next run
         iqUserAnswers = [];
         updateStatsDisplay();
+        // Show psycho/help suggestions based on IQ result
+        try{ showHelpForResult('iq', { estIQ, percentile, score: iqScore, total: arr.length }); }catch(e){ console.warn('showHelpForResult failed', e); }
         return;
       }
 
@@ -1080,6 +1104,7 @@
               const psyDetails = getPsy().map((item, idx) => ({ q: item.q, chosen: psyAnswers[idx] ? psyAnswers[idx].label : null, score: psyAnswers[idx] ? psyAnswers[idx].score : null }));
               saveResult({ type:'psy', level: lvl, score: total, ts: Date.now(), lang:getLang(), details: psyDetails });
               updateStatsDisplay();
+              try{ showHelpForResult('psy', { score: total, level: lvl }); }catch(e){ console.warn('showHelpForResult failed', e); }
           }
         });
       });
@@ -1174,6 +1199,102 @@
       updateHistory(hist, 'week'); // Standard: Diese Woche anzeigen
     }
     
+    // =====================
+    // Help / Psycho suggestions (videos, breathing exercise, transcripts)
+    // =====================
+    function showHelpForResult(type, info){
+      // type: 'iq' or 'psy'
+      const container = document.getElementById(type === 'iq' ? 'iqHelp' : 'psyHelp');
+      const content = document.getElementById(type === 'iq' ? 'iqHelpContent' : 'psyHelpContent');
+      const transcript = document.getElementById(type === 'iq' ? 'iqTranscript' : 'psyTranscript');
+      if(!container || !content) return;
+      container.style.display = 'block';
+      transcript.style.display = 'none';
+      // default guidance blocks
+      if(type === 'iq'){
+        const est = info.estIQ || 100;
+        const pct = info.percentile || Math.round((info.score/info.total)*100);
+        if(est < 97 || pct < 40){
+          content.innerHTML = `
+            <strong>Entspanne & fokussiere dich</strong>
+            <p>Dein Ergebnis deutet auf Verbesserungs-Potenzial hin. Ein kurzes Atemtraining kann helfen, Stress zu verringern und die Konzentration zu steigern.</p>
+            <div class="breath-circle" id="breathCircle"></div>
+            <div class="breath-controls">
+              <button class="small" id="startBreathBtn">Start Atemübung</button>
+              <button class="small" id="stopBreathBtn">Stopp</button>
+              <button class="small" id="showVideoBtn">Video ansehen (optional)</button>
+            </div>
+            <p style="font-size:.9rem;color:var(--muted);margin-top:.6rem">Du kannst eigene Videos in den Ordner <code>store-assets/help</code> legen und sie hier verlinken.</p>
+          `;
+        } else if(est < 110){
+          content.innerHTML = `<strong>Gute Leistung — wenig Feinschliff nötig</strong><p>Kurze Konzentrationsübungen (5–10 Minuten) helfen, das Niveau zu halten.</p><div style="margin-top:.6rem"><button class="small" id="showVideoBtn">Konzentrationsübung ansehen</button></div>`;
+        } else {
+          content.innerHTML = `<strong>Sehr gut!</strong><p>Deine Leistung ist überdurchschnittlich. Zur weiteren Verbesserung zeigen wir fortgeschrittene Denkaufgaben und Fokustraining.</p><div style="margin-top:.6rem"><button class="small" id="showVideoBtn">Fortgeschrittene Übung</button></div>`;
+        }
+      } else {
+        // psyche suggestions (info.level may be descriptive)
+        const lvl = info.level || ''; const score = info.score || 0;
+        if(score >= 15 || /hoch|hoch/.test(String(lvl).toLowerCase())){
+          content.innerHTML = `
+            <strong>Entlastung empfohlen</strong>
+            <p>Deine Antworten deuten auf erhöhten Stress hin. Versuche eine angeleitete Atemübung oder ein kurzes Video zur Entspannung.</p>
+            <div class="breath-circle" id="breathCircle"></div>
+            <div class="breath-controls">
+              <button class="small" id="startBreathBtn">Start Atemübung</button>
+              <button class="small" id="stopBreathBtn">Stopp</button>
+              <button class="small" id="showVideoBtn">Video ansehen (optional)</button>
+            </div>
+          `;
+        } else if(score >= 8){
+          content.innerHTML = `<strong>Leichte Belastung</strong><p>Kurze Pausen und Atemübungen können helfen, das Wohlbefinden zu stabilisieren.</p><div style="margin-top:.6rem"><button class="small" id="startBreathBtn">Atemübung starten</button></div>`;
+        } else {
+          content.innerHTML = `<strong>Geringe Belastung</strong><p>Alles sieht gut aus. Weiterhin auf gute Pausen und Schlaf achten.</p>`;
+        }
+      }
+
+      // wire controls (breathing + video)
+      const startBtn = container.querySelector('#startBreathBtn');
+      const stopBtn = container.querySelector('#stopBreathBtn');
+      const showVideoBtn = container.querySelector('#showVideoBtn');
+      startBtn?.addEventListener('click', startBreathing);
+      stopBtn?.addEventListener('click', stopBreathing);
+      showVideoBtn?.addEventListener('click', () => {
+        // respect user consent for external embeds
+        const consent = localStorage.getItem('consentVideoEmbed') === '1';
+        if(!consent){
+          if(confirm('Video von externen Diensten laden? (YouTube) – Zustimmung speichern?')){
+            localStorage.setItem('consentVideoEmbed','1');
+          } else {
+            // show offline transcript fallback
+            transcript.style.display = 'block';
+            transcript.textContent = 'Kein Online-Zugriff erlaubt. Du kannst eigene Videos in store-assets/help ablegen und hier verlinken.';
+            return;
+          }
+        }
+        // load a sample YouTube privacy-enhanced embed (user may change id)
+        const videoId = type === 'iq' ? 'JwYX52BP2Sk' : 'z6X5oEIg6Ak';
+        content.innerHTML += `<div style="margin-top:0.8rem"><iframe width="100%" height="240" src="https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="Hilfs-Video"></iframe></div>`;
+      });
+    }
+
+    // Breathing animation control
+    let breathInterval = null;
+    function startBreathing(){
+      const circle = document.getElementById('breathCircle');
+      if(!circle) return;
+      let phase = 0; // 0 inhale, 1 hold, 2 exhale, 3 hold
+      const timings = [4000,4000,4000,0];
+      circle.style.transform = 'scale(1)';
+      breathInterval = setInterval(()=>{
+        if(phase === 0){ circle.style.transform = 'scale(1.25)'; circle.title = 'Einatmen'; }
+        else if(phase === 1){ circle.style.transform = 'scale(1.25)'; circle.title = 'Halte'; }
+        else if(phase === 2){ circle.style.transform = 'scale(0.85)'; circle.title = 'Ausatmen'; }
+        else { circle.style.transform = 'scale(0.85)'; circle.title = 'Halte'; }
+        phase = (phase + 1) % 4;
+      }, 4000);
+    }
+    function stopBreathing(){ if(breathInterval){ clearInterval(breathInterval); breathInterval=null; const circle = document.getElementById('breathCircle'); if(circle) circle.style.transform='scale(1)'; } }
+
     function updateHistory(hist, filter) {
       const now = new Date();
       const filtered = hist.filter(entry => {
@@ -1733,7 +1854,4 @@
   </script>
 </body>
 </html>
-
-
-
 
