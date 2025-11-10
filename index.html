@@ -1,4 +1,6 @@
 
+
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -30,7 +32,10 @@
   <!-- Chart.js - mit defer für bessere Performance -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 
-  <!-- Fonts - mit preload für bessere Performance -->
+  <!-- Fonts - preconnect + preload for bessere Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -391,6 +396,11 @@
     }
     .breath-controls{display:flex;gap:.5rem;justify-content:center;margin-top:.5rem}
     .transcript{font-size:.95rem;color:var(--muted);text-align:left;margin-top:.8rem;padding:.6rem;border-radius:8px;background:rgba(0,0,0,0.03)}
+    /* Respect users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+      .breath-circle { transition: none !important; }
+    }
     .sidebar-line:hover{
       color:var(--accent);
       transform:translateX(5px);
@@ -564,6 +574,12 @@
             <div style="color:var(--muted)" id="totalIQTests">0 Tests absolviert</div>
           </div>
           
+            <!-- Category breakdown -->
+            <div class="stats-block" style="text-align:center;" id="categoryBreakdownBlock">
+              <h3 style="color:var(--accent)">📂 Kategorien‑Score</h3>
+              <div id="categoryBreakdown" style="color:var(--muted); font-size:0.95rem">Noch keine Daten</div>
+            </div>
+          
           <!-- Psyche Übersicht -->
           <div class="stats-block" style="text-align:center;">
             <h3 style="color:var(--accent2)">🎯 Psyche Status</h3>
@@ -674,7 +690,6 @@
           {q:'Was ist 12 × 12?',a:['124','144','132'],c:1},
           {q:'Wurzel aus 81?',a:['7','8','9'],c:2},
           {q:'Wie viele Sekunden hat eine Stunde?',a:['3600','6000','1800'],c:0},
-          {q:'Wenn alle Rosen Blumen sind und einige Blumen schnell verblühen, was folgt?',a:['Alle Rosen verblühen schnell','Einige Rosen verblühen schnell','Keine Rosen verblühen'],c:1},
           {q:'Welches Wort passt nicht in die Reihe?',a:['Apfel','Banane','Karotte','Orange'],c:2},
           {q:'Was ist 15 × 15?',a:['215','225','235'],c:1},
           {q:'Welche Zahl fehlt: 1,4,9,16,?',a:['20','25','36'],c:2},
@@ -692,7 +707,14 @@
           {q:'Vervollständige die Reihe: 5,10,20,40,?',a:['50','60','80'],c:2},
           {q:'Welche Zahl ist Prim (kleinste Zahl größer als 1)?',a:['2','1','0'],c:0},
           {q:'Was ist die Quadratwurzel von 169?',a:['12','13','14'],c:1}
-        ],
+    ,
+    {q:'Wenn ein Rechteck 5 cm breit und 8 cm lang ist, wie groß ist die Fläche?',a:['40','13','20'],c:0,cat:'math'},
+    {q:'Welche Zahl vervollständigt die Reihe: 4,9,16,25,?',a:['30','36','49'],c:1,cat:'pattern'},
+    {q:'Wenn jede Stunde 60 Minuten hat, wie viele Minuten hat ein halber Tag?',a:['720','600','480'],c:0,cat:'math'},
+    {q:'Welches Wort passt thematisch nicht: Lehrer, Schüler, Stift, Tafel?',a:['Stift','Schüler','Tafel'],c:0,cat:'verbal'},
+    {q:'Merke dir folgende Zahlen: 3,7,2. Welche Zahl stand in der Mitte?',a:['3','7','2'],c:1,cat:'memory'},
+    {q:'Setze fort: 2,3,5,7,11,?',a:['12','13','15'],c:1,cat:'logic'}
+    ],
         psy: [
           {q:'Wie oft fühlst du dich unter Druck?',a:['Nie','Selten','Manchmal','Oft','Sehr oft'],s:[1,2,3,4,5]},
           {q:'Kannst du gut abschalten?',a:['Ja','Meistens','Teilweise','Selten','Nein'],s:[1,2,3,4,5]},
@@ -743,7 +765,13 @@
           {q:"¿Cuánto es 12 × 12?",a:["124","144","132"],c:1},
           {q:"¿Raíz cuadrada de 81?",a:["7","8","9"],c:2},
           {q:"¿Cuántos segundos hay en una hora?",a:["3600","6000","1800"],c:0},
-          {q:"Si 4 bolígrafos cuestan 3€, ¿cuánto cuestan 12?",a:["6€","9€","12€"],c:1}
+            {q:"Si 4 bolígrafos cuestan 3€, ¿cuánto cuestan 12?",a:["6€","9€","12€"],c:1},
+            {q:'Si un rectángulo mide 5 cm de ancho y 8 cm de largo, ¿cuál es su área?',a:['40','13','20'],c:0,cat:'math'},
+            {q:'¿Qué número completa la serie: 4,9,16,25,?',a:['30','36','49'],c:1,cat:'pattern'},
+            {q:'Si un día tiene 24 horas, ¿cuántos minutos tiene medio día?',a:['720','600','480'],c:0,cat:'math'},
+            {q:'¿Cuál palabra no pertenece: maestro, alumno, bolígrafo, pizarra?',a:['bolígrafo','alumno','pizarra'],c:0,cat:'verbal'},
+            {q:'Recuerda los números: 3,7,2. ¿Cuál estaba en el medio?',a:['3','7','2'],c:1,cat:'memory'},
+            {q:'Continúa: 2,3,5,7,11,?',a:['12','13','15'],c:1,cat:'logic'}
         ],
         psy: [
           {q:"¿Con qué frecuencia te sientes bajo presión?",a:["Nunca","Raramente","A veces","A menudo","Muy a menudo"],s:[1,2,3,4,5]},
@@ -782,7 +810,13 @@
           {q:"12 × 12 kaçtır?",a:["124","144","132"],c:1},
           {q:"81\'in karekökü?",a:["7","8","9"],c:2},
           {q:"Bir saatte kaç saniye vardır?",a:["3600","6000","1800"],c:0},
-          {q:"4 kalem 3TL ise, 12 kalem kaç TL?",a:["6TL","9TL","12TL"],c:1}
+          {q:"4 kalem 3TL ise, 12 kalem kaç TL?",a:["6TL","9TL","12TL"],c:1},
+          {q:'Eğer bir dikdörtgen 5 cm genişliğinde ve 8 cm uzunluğunda ise, alanı kaç cm²dir?',a:['40','13','20'],c:0,cat:'math'},
+          {q:'Seriyi tamamlayın: 4,9,16,25,?',a:['30','36','49'],c:1,cat:'pattern'},
+          {q:'Bir gün 24 saatse, yarım gün kaç dakikadır?',a:['720','600','480'],c:0,cat:'math'},
+          {q:'Hangi kelime ait değil: öğretmen, öğrenci, kalem, tahta?',a:['kalem','öğrenci','tahta'],c:0,cat:'verbal'},
+          {q:'Sayıları hatırla: 3,7,2. Ortada hangi sayı vardı?',a:['3','7','2'],c:1,cat:'memory'},
+          {q:'Devam et: 2,3,5,7,11,?',a:['12','13','15'],c:1,cat:'logic'}
         ],
         psy: [
           {q:"Ne sıklıkla baskı altında hissediyorsunuz?",a:["Hiçbir zaman","Nadiren","Bazen","Sık sık","Çok sık"],s:[1,2,3,4,5]},
@@ -821,7 +855,13 @@
           {q:"Combien fait 12 × 12?",a:["124","144","132"],c:1},
           {q:"Racine carrée de 81?",a:["7","8","9"],c:2},
           {q:"Combien de secondes dans une heure?",a:["3600","6000","1800"],c:0},
-          {q:"Si 4 stylos coûtent 3€, combien pour 12 stylos?",a:["6€","9€","12€"],c:1}
+          {q:"Si 4 stylos coûtent 3€, combien pour 12 stylos?",a:["6€","9€","12€"],c:1},
+          {q:'Si un rectangle mesure 5 cm de large et 8 cm de long, quelle est sa surface?',a:['40','13','20'],c:0,cat:'math'},
+          {q:'Quel nombre complète la série: 4,9,16,25,?',a:['30','36','49'],c:1,cat:'pattern'},
+          {q:'Si une journée a 24 heures, combien de minutes fait une demi-journée?',a:['720','600','480'],c:0,cat:'math'},
+          {q:'Quel mot n\'appartient pas: professeur, élève, stylo, tableau?',a:['stylo','élève','tableau'],c:0,cat:'verbal'},
+          {q:'Souvenez-vous des chiffres: 3,7,2. Quel chiffre était au milieu?',a:['3','7','2'],c:1,cat:'memory'},
+          {q:'Continuez: 2,3,5,7,11,?',a:['12','13','15'],c:1,cat:'logic'}
         ],
         psy: [
           {q:"À quelle fréquence vous sentez-vous sous pression?",a:["Jamais","Rarement","Parfois","Souvent","Très souvent"],s:[1,2,3,4,5]},
@@ -949,15 +989,52 @@
     const iqContainer = document.getElementById('iqQuestions');
     const iqResult = document.getElementById('iqResult');
     const aiTip = document.getElementById('aiTip');
-
+  
+  // current selected category (null = all)
+  let currentCategory = null;
+  // currentQuestionSet keeps the shuffled question order for the ongoing test
+  let currentQuestionSet = null;
   let iqIndex = 0; let iqScore = 0;
   // track user's chosen answers for breakdown
   let iqUserAnswers = [];
 
   // (use safer getIQ above)
 
-    function renderIQ() {
-      const arr = getIQ();
+    // Return an array of categories for IQ questions. If questions define a `cat` property use it,
+    // otherwise assign a repeating pattern by index.
+    function getIQCategories(rawArr){
+      const pattern = ['math','pattern','logic','verbal','memory'];
+      return rawArr.map((q,i)=> q.cat ? q.cat : pattern[i % pattern.length]);
+    }
+
+    // Fisher-Yates shuffle (in-place)
+    function shuffleArray(arr){
+      for(let i = arr.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function renderIQ(selectedCategory) {
+      const raw = getIQ();
+      var arr; // will hold the ordered question set for this run
+      // if we already have a currentQuestionSet for this category, reuse it
+      if(currentQuestionSet && currentQuestionSet._category === selectedCategory){
+        arr = currentQuestionSet.slice();
+      } else {
+        // attach category metadata to each question
+        const categories = getIQCategories(raw);
+        const arrWithMeta = raw.map((q,i)=> Object.assign({}, q, { __cat: categories[i] }));
+        arr = arrWithMeta;
+        // if a category is requested, filter the questions
+        if(selectedCategory) arr = arrWithMeta.filter((q)=> q.__cat === selectedCategory);
+        // shuffle the question order to avoid repeating the same starting questions
+        shuffleArray(arr);
+        // persist the set for the duration of this test
+        currentQuestionSet = arr.slice();
+        currentQuestionSet._category = selectedCategory || null;
+      }
       if(iqIndex >= arr.length) {
         const msg = i18n[getLang()].ui.results.iq(iqScore, arr.length);
         iqResult.textContent = msg;
@@ -998,10 +1075,22 @@
           choices: q.a,
           chosenIndex: typeof iqUserAnswers[idx] === 'number' ? iqUserAnswers[idx] : null,
           correctIndex: q.c,
-          correct: typeof iqUserAnswers[idx] === 'number' ? (iqUserAnswers[idx] === q.c) : false
+          correct: typeof iqUserAnswers[idx] === 'number' ? (iqUserAnswers[idx] === q.c) : false,
+          category: q.__cat || 'general'
         }));
 
-        saveResult({ type:'iq', score: iqScore, total: arr.length, ts: Date.now(), lang:getLang(), details });
+        // compute per-category scores
+        const categoryScores = {};
+        details.forEach(d=>{
+          const cat = d.category || 'general';
+          if(!categoryScores[cat]) categoryScores[cat] = { correct:0, total:0 };
+          if(d.chosenIndex !== null) {
+            categoryScores[cat].total += 1;
+            if(d.correct) categoryScores[cat].correct += 1;
+          }
+        });
+
+  saveResult({ type:'iq', score: iqScore, total: arr.length, ts: Date.now(), lang:getLang(), details, categories: categoryScores });
         // also render a detailed breakdown below the result
         const breakdown = document.createElement('div');
         breakdown.style.marginTop = '1rem';
@@ -1055,7 +1144,7 @@
           // Wait a moment to show the result
           setTimeout(() => {
             iqIndex++;
-            renderIQ();
+            renderIQ(currentCategory);
           }, 1000);
         });
       });
@@ -1152,6 +1241,32 @@
       const latestPsy = psyTests[psyTests.length - 1];
       document.getElementById('currentStressLevel').textContent = latestPsy ? latestPsy.level : '--';
       document.getElementById('totalPsyTests').textContent = `${psyTests.length} Tests absolviert`;
+      // Berechne Kategorie-Durchschnitte (falls in history vorhanden)
+      const categoryEl = document.getElementById('categoryBreakdown');
+      if(categoryEl){
+        // aggregate over all IQ entries that include categories
+        const catAgg = {};
+        hist.filter(e=>e.type==='iq' && e.categories).forEach(e=>{
+          Object.entries(e.categories).forEach(([cat,vals])=>{
+            if(!catAgg[cat]) catAgg[cat] = { correct:0, total:0, count:0 };
+            catAgg[cat].correct += vals.correct || 0;
+            catAgg[cat].total += vals.total || 0;
+            if(vals.total && vals.total>0) catAgg[cat].count += 1;
+          });
+        });
+
+        if(Object.keys(catAgg).length===0){
+          categoryEl.textContent = 'Noch keine Kategoriescores vorhanden.';
+        } else {
+          // build display lines
+          const lines = Object.keys(catAgg).map(cat=>{
+            const v = catAgg[cat];
+            const pct = v.total>0 ? Math.round((v.correct / v.total) * 100) : 0;
+            return `${cat}: ${pct}% (${v.correct}/${v.total})`;
+          });
+          categoryEl.innerHTML = lines.join('<br>');
+        }
+      }
       
       // Berechne Performance-Trend
       if (iqTests.length >= 2) {
@@ -1371,7 +1486,7 @@
         iqScores.slice(0,5).forEach(e=>{
           const li = document.createElement('li');
           const flag = langFlags[e.lang] || '🏳️';
-          li.innerHTML = `<img src="icons/icon-152x152.png" style="width:18px;height:18px;border-radius:4px;vertical-align:middle;margin-right:.4rem"> <span style="margin-right:.4rem">${flag}</span> <strong>${e.score} / ${e.total}</strong> <span style="color:var(--muted); margin-left:.6rem">(${new Date(e.date).toLocaleDateString()})</span>`;
+          li.innerHTML = `<img loading="lazy" src="icons/icon-152x152.png" style="width:18px;height:18px;border-radius:4px;vertical-align:middle;margin-right:.4rem"> <span style="margin-right:.4rem">${flag}</span> <strong>${e.score} / ${e.total}</strong> <span style="color:var(--muted); margin-left:.6rem">(${new Date(e.date).toLocaleDateString()})</span>`;
           highscoreIQ.appendChild(li);
         });
         if(iqScores.length===0){
@@ -1391,7 +1506,7 @@
         psyScores.slice(0,5).forEach(e=>{
           const li = document.createElement('li');
           const flag = langFlags[e.lang] || '🏳️';
-          li.innerHTML = `<img src="icons/icon-152x152.png" style="width:18px;height:18px;border-radius:4px;vertical-align:middle;margin-right:.4rem"> <span style="margin-right:.4rem">${flag}</span> <strong>${e.level}</strong> <span style="color:var(--muted); margin-left:.6rem">(${e.score})</span> <span style="color:var(--muted); margin-left:.6rem">(${new Date(e.date).toLocaleDateString()})</span>`;
+          li.innerHTML = `<img loading="lazy" src="icons/icon-152x152.png" style="width:18px;height:18px;border-radius:4px;vertical-align:middle;margin-right:.4rem"> <span style="margin-right:.4rem">${flag}</span> <strong>${e.level}</strong> <span style="color:var(--muted); margin-left:.6rem">(${e.score})</span> <span style="color:var(--muted); margin-left:.6rem">(${new Date(e.date).toLocaleDateString()})</span>`;
           highscorePsy.appendChild(li);
         });
         if(psyScores.length===0){
@@ -1531,6 +1646,8 @@
     document.querySelectorAll('.category-select button').forEach(btn => {
       btn.addEventListener('click', () => {
         currentCategory = btn.getAttribute('data-category');
+        // reset any existing question set so we build a fresh shuffled set for this category
+        currentQuestionSet = null;
         iqIndex = 0;
         iqScore = 0;
         iqUserAnswers = [];
@@ -1551,7 +1668,9 @@
     const startBtn = document.getElementById('startBtn');
     startBtn.addEventListener('click',()=>{
       showScreen('iqTest');
-      iqIndex = 0; iqScore = 0; renderIQ();
+  // start fresh question set (shuffle) when starting a new test
+  currentQuestionSet = null;
+  iqIndex = 0; iqScore = 0; renderIQ(currentCategory);
       startBtn.disabled = true;
       startBtn.textContent = getLang()==='de' ? 'Läuft...' : 'Running...';
     });
@@ -1854,4 +1973,5 @@
   </script>
 </body>
 </html>
+
 
