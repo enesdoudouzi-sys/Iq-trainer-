@@ -1,4 +1,6 @@
 
+
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -30,7 +32,10 @@
   <!-- Chart.js - mit defer für bessere Performance -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 
-  <!-- Fonts - mit preload für bessere Performance -->
+  <!-- Fonts - preconnect + preload for bessere Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -391,6 +396,11 @@
     }
     .breath-controls{display:flex;gap:.5rem;justify-content:center;margin-top:.5rem}
     .transcript{font-size:.95rem;color:var(--muted);text-align:left;margin-top:.8rem;padding:.6rem;border-radius:8px;background:rgba(0,0,0,0.03)}
+    /* Respect users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+      .breath-circle { transition: none !important; }
+    }
     .sidebar-line:hover{
       color:var(--accent);
       transform:translateX(5px);
@@ -481,6 +491,7 @@
         <button data-screen="psyTest" class="option" id="tabPsy">Psyche</button>
         <button data-screen="daily" class="option" id="tabDaily">🎯 Daily</button>
         <button data-screen="stats" class="option" id="tabStats">Statistik</button>
+        <button data-screen="settings" class="option" id="tabSettings">⚙️ Einstellungen</button>
       </div>
 
       <!-- Difficulty & Category Selection -->
@@ -564,6 +575,12 @@
             <div style="color:var(--muted)" id="totalIQTests">0 Tests absolviert</div>
           </div>
           
+            <!-- Category breakdown -->
+            <div class="stats-block" style="text-align:center;" id="categoryBreakdownBlock">
+              <h3 style="color:var(--accent)">📂 Kategorien‑Score</h3>
+              <div id="categoryBreakdown" style="color:var(--muted); font-size:0.95rem">Noch keine Daten</div>
+            </div>
+          
           <!-- Psyche Übersicht -->
           <div class="stats-block" style="text-align:center;">
             <h3 style="color:var(--accent2)">🎯 Psyche Status</h3>
@@ -613,6 +630,82 @@
 
         <button id="clearDataBtn" class="danger-btn">Alle gespeicherten Daten löschen</button>
         <button id="seedDemoBtn" class="start-btn small" style="margin-left:0.6rem">Demo-Daten einfügen</button>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="settings" class="screen">
+        <h2>⚙️ Einstellungen</h2>
+        
+        <div class="stats-block">
+          <h3>🫁 Atemübung konfigurieren</h3>
+          <p style="color:var(--muted);margin-bottom:1rem">Passe die Dauer der Atemübung nach deinen Vorlieben an:</p>
+          
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1.5rem">
+            <div>
+              <label for="breathInhale" style="display:block;margin-bottom:0.5rem;color:var(--accent);font-weight:600">Einatmen (Sekunden)</label>
+              <input type="range" id="breathInhale" min="2" max="8" step="1" style="width:100%"/>
+              <div style="text-align:center;color:var(--accent2);margin-top:0.3rem"><span id="breathInhaleValue">4</span>s</div>
+            </div>
+            <div>
+              <label for="breathHold" style="display:block;margin-bottom:0.5rem;color:var(--accent);font-weight:600">Halten (Sekunden)</label>
+              <input type="range" id="breathHold" min="2" max="8" step="1" style="width:100%"/>
+              <div style="text-align:center;color:var(--accent2);margin-top:0.3rem"><span id="breathHoldValue">4</span>s</div>
+            </div>
+            <div>
+              <label for="breathExhale" style="display:block;margin-bottom:0.5rem;color:var(--accent);font-weight:600">Ausatmen (Sekunden)</label>
+              <input type="range" id="breathExhale" min="2" max="8" step="1" style="width:100%"/>
+              <div style="text-align:center;color:var(--accent2);margin-top:0.3rem"><span id="breathExhaleValue">4</span>s</div>
+            </div>
+            <div>
+              <label for="breathHoldAfter" style="display:block;margin-bottom:0.5rem;color:var(--accent);font-weight:600">Pause danach (Sekunden)</label>
+              <input type="range" id="breathHoldAfter" min="0" max="4" step="1" style="width:100%"/>
+              <div style="text-align:center;color:var(--accent2);margin-top:0.3rem"><span id="breathHoldAfterValue">0</span>s</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap">
+            <button class="start-btn" id="breathTestBtn">Atemübung testen</button>
+            <button class="option" id="breathResetBtn">Auf Standard zurücksetzen</button>
+          </div>
+        </div>
+
+        <div class="stats-block">
+          <h3>🔔 Benachrichtigungen</h3>
+          <p style="color:var(--muted);margin-bottom:1rem">Passe deine täglichen Erinnerungen an:</p>
+          
+          <div style="margin-bottom:1rem">
+            <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;color:var(--text)">
+              <input type="checkbox" id="notifEnabled" style="cursor:pointer"/>
+              <span>Tägliche Benachrichtigungen aktivieren</span>
+            </label>
+          </div>
+
+          <div>
+            <label for="notifTime" style="display:block;margin-bottom:0.5rem;color:var(--accent);font-weight:600">Benachrichtigungszeit</label>
+            <input type="time" id="notifTime" style="padding:0.6rem;border-radius:8px;background:var(--card-bg);color:var(--text);border:1px solid var(--card-border)"/>
+          </div>
+        </div>
+
+        <div class="stats-block">
+          <h3>📊 Datenmanagement</h3>
+          <p style="color:var(--muted);margin-bottom:1rem">Exportiere oder lösche deine Daten:</p>
+          
+          <div style="display:flex;gap:1rem;flex-wrap:wrap">
+            <button class="start-btn" id="exportDataBtn">📥 Daten exportieren (JSON)</button>
+            <button class="option" id="importDataBtn">📤 Daten importieren</button>
+            <input type="file" id="importFile" accept=".json" style="display:none"/>
+          </div>
+          <p style="color:var(--muted);font-size:0.9rem;margin-top:0.6rem">Deine Daten werden in eine JSON-Datei exportiert, die du sicher speichern kannst.</p>
+        </div>
+
+        <div class="stats-block">
+          <h3>ℹ️ Über die App</h3>
+          <div style="color:var(--muted);line-height:1.6">
+            <div><strong>Version:</strong> 2.0.0</div>
+            <div><strong>Speicher:</strong> <span id="storageInfo">–</span></div>
+            <div style="margin-top:0.6rem;font-size:0.9rem">Alle Daten werden lokal in deinem Browser gespeichert. Keine Serversynchronisation.</div>
+          </div>
+        </div>
       </section>
     </section>
 
@@ -674,7 +767,6 @@
           {q:'Was ist 12 × 12?',a:['124','144','132'],c:1},
           {q:'Wurzel aus 81?',a:['7','8','9'],c:2},
           {q:'Wie viele Sekunden hat eine Stunde?',a:['3600','6000','1800'],c:0},
-          {q:'Wenn alle Rosen Blumen sind und einige Blumen schnell verblühen, was folgt?',a:['Alle Rosen verblühen schnell','Einige Rosen verblühen schnell','Keine Rosen verblühen'],c:1},
           {q:'Welches Wort passt nicht in die Reihe?',a:['Apfel','Banane','Karotte','Orange'],c:2},
           {q:'Was ist 15 × 15?',a:['215','225','235'],c:1},
           {q:'Welche Zahl fehlt: 1,4,9,16,?',a:['20','25','36'],c:2},
@@ -692,7 +784,14 @@
           {q:'Vervollständige die Reihe: 5,10,20,40,?',a:['50','60','80'],c:2},
           {q:'Welche Zahl ist Prim (kleinste Zahl größer als 1)?',a:['2','1','0'],c:0},
           {q:'Was ist die Quadratwurzel von 169?',a:['12','13','14'],c:1}
-        ],
+    ,
+    {q:'Wenn ein Rechteck 5 cm breit und 8 cm lang ist, wie groß ist die Fläche?',a:['40','13','20'],c:0,cat:'math'},
+    {q:'Welche Zahl vervollständigt die Reihe: 4,9,16,25,?',a:['30','36','49'],c:1,cat:'pattern'},
+    {q:'Wenn jede Stunde 60 Minuten hat, wie viele Minuten hat ein halber Tag?',a:['720','600','480'],c:0,cat:'math'},
+    {q:'Welches Wort passt thematisch nicht: Lehrer, Schüler, Stift, Tafel?',a:['Stift','Schüler','Tafel'],c:0,cat:'verbal'},
+    {q:'Merke dir folgende Zahlen: 3,7,2. Welche Zahl stand in der Mitte?',a:['3','7','2'],c:1,cat:'memory'},
+    {q:'Setze fort: 2,3,5,7,11,?',a:['12','13','15'],c:1,cat:'logic'}
+    ],
         psy: [
           {q:'Wie oft fühlst du dich unter Druck?',a:['Nie','Selten','Manchmal','Oft','Sehr oft'],s:[1,2,3,4,5]},
           {q:'Kannst du gut abschalten?',a:['Ja','Meistens','Teilweise','Selten','Nein'],s:[1,2,3,4,5]},
@@ -743,7 +842,13 @@
           {q:"¿Cuánto es 12 × 12?",a:["124","144","132"],c:1},
           {q:"¿Raíz cuadrada de 81?",a:["7","8","9"],c:2},
           {q:"¿Cuántos segundos hay en una hora?",a:["3600","6000","1800"],c:0},
-          {q:"Si 4 bolígrafos cuestan 3€, ¿cuánto cuestan 12?",a:["6€","9€","12€"],c:1}
+            {q:"Si 4 bolígrafos cuestan 3€, ¿cuánto cuestan 12?",a:["6€","9€","12€"],c:1},
+            {q:'Si un rectángulo mide 5 cm de ancho y 8 cm de largo, ¿cuál es su área?',a:['40','13','20'],c:0,cat:'math'},
+            {q:'¿Qué número completa la serie: 4,9,16,25,?',a:['30','36','49'],c:1,cat:'pattern'},
+            {q:'Si un día tiene 24 horas, ¿cuántos minutos tiene medio día?',a:['720','600','480'],c:0,cat:'math'},
+            {q:'¿Cuál palabra no pertenece: maestro, alumno, bolígrafo, pizarra?',a:['bolígrafo','alumno','pizarra'],c:0,cat:'verbal'},
+            {q:'Recuerda los números: 3,7,2. ¿Cuál estaba en el medio?',a:['3','7','2'],c:1,cat:'memory'},
+            {q:'Continúa: 2,3,5,7,11,?',a:['12','13','15'],c:1,cat:'logic'}
         ],
         psy: [
           {q:"¿Con qué frecuencia te sientes bajo presión?",a:["Nunca","Raramente","A veces","A menudo","Muy a menudo"],s:[1,2,3,4,5]},
@@ -782,7 +887,13 @@
           {q:"12 × 12 kaçtır?",a:["124","144","132"],c:1},
           {q:"81\'in karekökü?",a:["7","8","9"],c:2},
           {q:"Bir saatte kaç saniye vardır?",a:["3600","6000","1800"],c:0},
-          {q:"4 kalem 3TL ise, 12 kalem kaç TL?",a:["6TL","9TL","12TL"],c:1}
+          {q:"4 kalem 3TL ise, 12 kalem kaç TL?",a:["6TL","9TL","12TL"],c:1},
+          {q:'Eğer bir dikdörtgen 5 cm genişliğinde ve 8 cm uzunluğunda ise, alanı kaç cm²dir?',a:['40','13','20'],c:0,cat:'math'},
+          {q:'Seriyi tamamlayın: 4,9,16,25,?',a:['30','36','49'],c:1,cat:'pattern'},
+          {q:'Bir gün 24 saatse, yarım gün kaç dakikadır?',a:['720','600','480'],c:0,cat:'math'},
+          {q:'Hangi kelime ait değil: öğretmen, öğrenci, kalem, tahta?',a:['kalem','öğrenci','tahta'],c:0,cat:'verbal'},
+          {q:'Sayıları hatırla: 3,7,2. Ortada hangi sayı vardı?',a:['3','7','2'],c:1,cat:'memory'},
+          {q:'Devam et: 2,3,5,7,11,?',a:['12','13','15'],c:1,cat:'logic'}
         ],
         psy: [
           {q:"Ne sıklıkla baskı altında hissediyorsunuz?",a:["Hiçbir zaman","Nadiren","Bazen","Sık sık","Çok sık"],s:[1,2,3,4,5]},
@@ -821,7 +932,13 @@
           {q:"Combien fait 12 × 12?",a:["124","144","132"],c:1},
           {q:"Racine carrée de 81?",a:["7","8","9"],c:2},
           {q:"Combien de secondes dans une heure?",a:["3600","6000","1800"],c:0},
-          {q:"Si 4 stylos coûtent 3€, combien pour 12 stylos?",a:["6€","9€","12€"],c:1}
+          {q:"Si 4 stylos coûtent 3€, combien pour 12 stylos?",a:["6€","9€","12€"],c:1},
+          {q:'Si un rectangle mesure 5 cm de large et 8 cm de long, quelle est sa surface?',a:['40','13','20'],c:0,cat:'math'},
+          {q:'Quel nombre complète la série: 4,9,16,25,?',a:['30','36','49'],c:1,cat:'pattern'},
+          {q:'Si une journée a 24 heures, combien de minutes fait une demi-journée?',a:['720','600','480'],c:0,cat:'math'},
+          {q:'Quel mot n\'appartient pas: professeur, élève, stylo, tableau?',a:['stylo','élève','tableau'],c:0,cat:'verbal'},
+          {q:'Souvenez-vous des chiffres: 3,7,2. Quel chiffre était au milieu?',a:['3','7','2'],c:1,cat:'memory'},
+          {q:'Continuez: 2,3,5,7,11,?',a:['12','13','15'],c:1,cat:'logic'}
         ],
         psy: [
           {q:"À quelle fréquence vous sentez-vous sous pression?",a:["Jamais","Rarement","Parfois","Souvent","Très souvent"],s:[1,2,3,4,5]},
@@ -949,15 +1066,52 @@
     const iqContainer = document.getElementById('iqQuestions');
     const iqResult = document.getElementById('iqResult');
     const aiTip = document.getElementById('aiTip');
-
+  
+  // current selected category (null = all)
+  let currentCategory = null;
+  // currentQuestionSet keeps the shuffled question order for the ongoing test
+  let currentQuestionSet = null;
   let iqIndex = 0; let iqScore = 0;
   // track user's chosen answers for breakdown
   let iqUserAnswers = [];
 
   // (use safer getIQ above)
 
-    function renderIQ() {
-      const arr = getIQ();
+    // Return an array of categories for IQ questions. If questions define a `cat` property use it,
+    // otherwise assign a repeating pattern by index.
+    function getIQCategories(rawArr){
+      const pattern = ['math','pattern','logic','verbal','memory'];
+      return rawArr.map((q,i)=> q.cat ? q.cat : pattern[i % pattern.length]);
+    }
+
+    // Fisher-Yates shuffle (in-place)
+    function shuffleArray(arr){
+      for(let i = arr.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function renderIQ(selectedCategory) {
+      const raw = getIQ();
+      var arr; // will hold the ordered question set for this run
+      // if we already have a currentQuestionSet for this category, reuse it
+      if(currentQuestionSet && currentQuestionSet._category === selectedCategory){
+        arr = currentQuestionSet.slice();
+      } else {
+        // attach category metadata to each question
+        const categories = getIQCategories(raw);
+        const arrWithMeta = raw.map((q,i)=> Object.assign({}, q, { __cat: categories[i] }));
+        arr = arrWithMeta;
+        // if a category is requested, filter the questions
+        if(selectedCategory) arr = arrWithMeta.filter((q)=> q.__cat === selectedCategory);
+        // shuffle the question order to avoid repeating the same starting questions
+        shuffleArray(arr);
+        // persist the set for the duration of this test
+        currentQuestionSet = arr.slice();
+        currentQuestionSet._category = selectedCategory || null;
+      }
       if(iqIndex >= arr.length) {
         const msg = i18n[getLang()].ui.results.iq(iqScore, arr.length);
         iqResult.textContent = msg;
@@ -998,10 +1152,22 @@
           choices: q.a,
           chosenIndex: typeof iqUserAnswers[idx] === 'number' ? iqUserAnswers[idx] : null,
           correctIndex: q.c,
-          correct: typeof iqUserAnswers[idx] === 'number' ? (iqUserAnswers[idx] === q.c) : false
+          correct: typeof iqUserAnswers[idx] === 'number' ? (iqUserAnswers[idx] === q.c) : false,
+          category: q.__cat || 'general'
         }));
 
-        saveResult({ type:'iq', score: iqScore, total: arr.length, ts: Date.now(), lang:getLang(), details });
+        // compute per-category scores
+        const categoryScores = {};
+        details.forEach(d=>{
+          const cat = d.category || 'general';
+          if(!categoryScores[cat]) categoryScores[cat] = { correct:0, total:0 };
+          if(d.chosenIndex !== null) {
+            categoryScores[cat].total += 1;
+            if(d.correct) categoryScores[cat].correct += 1;
+          }
+        });
+
+  saveResult({ type:'iq', score: iqScore, total: arr.length, ts: Date.now(), lang:getLang(), details, categories: categoryScores });
         // also render a detailed breakdown below the result
         const breakdown = document.createElement('div');
         breakdown.style.marginTop = '1rem';
@@ -1055,7 +1221,7 @@
           // Wait a moment to show the result
           setTimeout(() => {
             iqIndex++;
-            renderIQ();
+            renderIQ(currentCategory);
           }, 1000);
         });
       });
@@ -1111,21 +1277,36 @@
     }
 
     // =====================
-    // LocalStorage Persistenz & Statistik
+    // Storage Persistenz & Statistik (mit IndexedDB Fallback)
     // =====================
     const statLastIQ = document.getElementById('statLastIQ');
     const statPsyLevel = document.getElementById('statPsyLevel');
     const historyList = document.getElementById('historyList');
     const clearDataBtn = document.getElementById('clearDataBtn');
 
-    function saveResult(entry){
-      const raw = localStorage.getItem('history');
-      const hist = raw ? JSON.parse(raw) : [];
-      hist.push(entry);
-      if(hist.length > 200) hist.shift();
-      localStorage.setItem('history', JSON.stringify(hist));
-      // Update stats immediately after saving so leaderboard refreshes
+    async function saveResult(entry){
+      try {
+        // Try IndexedDB first
+        await saveResultToDB(entry);
+      } catch (e) {
+        // Fallback to localStorage
+        saveResultToLocalStorage(entry);
+      }
+      // Update stats immediately after saving
       try{ updateStatsDisplay(); }catch(e){ /* ignore if UI not ready yet */ }
+    }
+
+    async function getHistoryData() {
+      try {
+        // Try IndexedDB first
+        const dbData = await getHistoryFromDB();
+        if (dbData && dbData.length > 0) return dbData;
+      } catch (e) {
+        console.log('IndexedDB read failed, using localStorage');
+      }
+      // Fallback to localStorage
+      const raw = localStorage.getItem('history');
+      return raw ? JSON.parse(raw) : [];
     }
 
     // Chart Instances
@@ -1133,70 +1314,97 @@
     let stressChart = null;
 
     function updateStatsDisplay(){
-      const raw = localStorage.getItem('history');
-      const hist = raw ? JSON.parse(raw) : [];
-      
-      // Update Charts
-      updateCharts(hist);
-      
-      // Berechne durchschnittliche IQ-Performance
-      const iqTests = hist.filter(e => e.type === 'iq');
-      const avgScore = iqTests.length > 0 
-        ? Math.round(iqTests.reduce((acc, curr) => acc + (curr.score / curr.total * 100), 0) / iqTests.length) 
-        : 0;
-      document.getElementById('avgIQScore').textContent = avgScore + '%';
-      document.getElementById('totalIQTests').textContent = `${iqTests.length} Tests absolviert`;
-      
-      // Berechne aktuelles Stress-Level
-      const psyTests = hist.filter(e => e.type === 'psy');
-      const latestPsy = psyTests[psyTests.length - 1];
-      document.getElementById('currentStressLevel').textContent = latestPsy ? latestPsy.level : '--';
-      document.getElementById('totalPsyTests').textContent = `${psyTests.length} Tests absolviert`;
-      
-      // Berechne Performance-Trend
-      if (iqTests.length >= 2) {
-        const recent = iqTests.slice(-3); // Letzte 3 Tests
-        const trend = recent.reduce((acc, curr, i, arr) => {
-          if (i === 0) return 0;
-          return acc + (curr.score/curr.total - arr[i-1].score/arr[i-1].total);
-        }, 0);
+      getHistoryData().then(hist => {
+        if (!Array.isArray(hist)) hist = [];
         
-        const trendEl = document.getElementById('performanceTrend');
-        if (trend > 0) {
-          trendEl.textContent = '📈 Verbesserung';
-          trendEl.style.color = '#00ff00';
-        } else if (trend < 0) {
-          trendEl.textContent = '📉 Leichter Rückgang';
-          trendEl.style.color = 'var(--danger)';
-        } else {
-          trendEl.textContent = '➡️ Stabil';
-          trendEl.style.color = 'var(--accent)';
+        // Update Charts
+        updateCharts(hist);
+        
+        // Berechne durchschnittliche IQ-Performance
+        const iqTests = hist.filter(e => e.type === 'iq');
+        const avgScore = iqTests.length > 0 
+          ? Math.round(iqTests.reduce((acc, curr) => acc + (curr.score / curr.total * 100), 0) / iqTests.length) 
+          : 0;
+        document.getElementById('avgIQScore').textContent = avgScore + '%';
+        document.getElementById('totalIQTests').textContent = `${iqTests.length} Tests absolviert`;
+        
+        // Berechne aktuelles Stress-Level
+        const psyTests = hist.filter(e => e.type === 'psy');
+        const latestPsy = psyTests[psyTests.length - 1];
+        document.getElementById('currentStressLevel').textContent = latestPsy ? latestPsy.level : '--';
+        document.getElementById('totalPsyTests').textContent = `${psyTests.length} Tests absolviert`;
+        // Berechne Kategorie-Durchschnitte (falls in history vorhanden)
+        const categoryEl = document.getElementById('categoryBreakdown');
+        if(categoryEl){
+          // aggregate over all IQ entries that include categories
+          const catAgg = {};
+          hist.filter(e=>e.type==='iq' && e.categories).forEach(e=>{
+            Object.entries(e.categories).forEach(([cat,vals])=>{
+              if(!catAgg[cat]) catAgg[cat] = { correct:0, total:0, count:0 };
+              catAgg[cat].correct += vals.correct || 0;
+              catAgg[cat].total += vals.total || 0;
+              if(vals.total && vals.total>0) catAgg[cat].count += 1;
+            });
+          });
+
+          if(Object.keys(catAgg).length===0){
+            categoryEl.textContent = 'Noch keine Kategoriescores vorhanden.';
+          } else {
+            // build display lines
+            const lines = Object.keys(catAgg).map(cat=>{
+              const v = catAgg[cat];
+              const pct = v.total>0 ? Math.round((v.correct / v.total) * 100) : 0;
+              return `${cat}: ${pct}% (${v.correct}/${v.total})`;
+            });
+            categoryEl.innerHTML = lines.join('<br>');
+          }
         }
-      }
-
-      const lastIQ = [...hist].reverse().find(e=>e.type==='iq');
-      statLastIQ.textContent = lastIQ ? `${lastIQ.score} / ${lastIQ.total}` : '–';
-
-      const lastPsy = [...hist].reverse().find(e=>e.type==='psy');
-      statPsyLevel.textContent = lastPsy ? lastPsy.level : '–';
-
-      // Filter-Handler für Verlauf
-      const filterButtons = document.querySelectorAll('.history-filter button');
-      filterButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const filter = btn.getAttribute('data-filter');
-          updateHistory(hist, filter);
+        
+        // Berechne Performance-Trend
+        if (iqTests.length >= 2) {
+          const recent = iqTests.slice(-3); // Letzte 3 Tests
+          const trend = recent.reduce((acc, curr, i, arr) => {
+            if (i === 0) return 0;
+            return acc + (curr.score/curr.total - arr[i-1].score/arr[i-1].total);
+          }, 0);
           
-          // Update Button-Styles
-          filterButtons.forEach(b => {
-            b.style.background = b === btn ? 
-              'linear-gradient(90deg,var(--accent),var(--accent2))' : 
-              'linear-gradient(90deg,var(--accent2),var(--accent))';
+          const trendEl = document.getElementById('performanceTrend');
+          if (trend > 0) {
+            trendEl.textContent = '📈 Verbesserung';
+            trendEl.style.color = '#00ff00';
+          } else if (trend < 0) {
+            trendEl.textContent = '📉 Leichter Rückgang';
+            trendEl.style.color = 'var(--danger)';
+          } else {
+            trendEl.textContent = '➡️ Stabil';
+            trendEl.style.color = 'var(--accent)';
+          }
+        }
+
+        const lastIQ = [...hist].reverse().find(e=>e.type==='iq');
+        statLastIQ.textContent = lastIQ ? `${lastIQ.score} / ${lastIQ.total}` : '–';
+
+        const lastPsy = [...hist].reverse().find(e=>e.type==='psy');
+        statPsyLevel.textContent = lastPsy ? lastPsy.level : '–';
+
+        // Filter-Handler für Verlauf
+        const filterButtons = document.querySelectorAll('.history-filter button');
+        filterButtons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const filter = btn.getAttribute('data-filter');
+            updateHistory(hist, filter);
+            
+            // Update Button-Styles
+            filterButtons.forEach(b => {
+              b.style.background = b === btn ? 
+                'linear-gradient(90deg,var(--accent),var(--accent2))' : 
+                'linear-gradient(90deg,var(--accent2),var(--accent))';
+            });
           });
         });
+        
+        updateHistory(hist, 'week'); // Standard: Diese Woche anzeigen
       });
-      
-      updateHistory(hist, 'week'); // Standard: Diese Woche anzeigen
     }
     
     // =====================
@@ -1279,19 +1487,31 @@
 
     // Breathing animation control
     let breathInterval = null;
+    let breathSettings = {
+      inhale: parseInt(localStorage.getItem('breathInhale') || '4'),
+      hold: parseInt(localStorage.getItem('breathHold') || '4'),
+      exhale: parseInt(localStorage.getItem('breathExhale') || '4'),
+      holdAfter: parseInt(localStorage.getItem('breathHoldAfter') || '0')
+    };
+
     function startBreathing(){
       const circle = document.getElementById('breathCircle');
       if(!circle) return;
       let phase = 0; // 0 inhale, 1 hold, 2 exhale, 3 hold
-      const timings = [4000,4000,4000,0];
+      const timings = [
+        breathSettings.inhale * 1000,
+        breathSettings.hold * 1000,
+        breathSettings.exhale * 1000,
+        breathSettings.holdAfter * 1000
+      ];
       circle.style.transform = 'scale(1)';
       breathInterval = setInterval(()=>{
-        if(phase === 0){ circle.style.transform = 'scale(1.25)'; circle.title = 'Einatmen'; }
-        else if(phase === 1){ circle.style.transform = 'scale(1.25)'; circle.title = 'Halte'; }
-        else if(phase === 2){ circle.style.transform = 'scale(0.85)'; circle.title = 'Ausatmen'; }
-        else { circle.style.transform = 'scale(0.85)'; circle.title = 'Halte'; }
+        if(phase === 0){ circle.style.transform = 'scale(1.25)'; circle.title = `Einatmen (${breathSettings.inhale}s)`; }
+        else if(phase === 1){ circle.style.transform = 'scale(1.25)'; circle.title = `Halten (${breathSettings.hold}s)`; }
+        else if(phase === 2){ circle.style.transform = 'scale(0.85)'; circle.title = `Ausatmen (${breathSettings.exhale}s)`; }
+        else { circle.style.transform = 'scale(0.85)'; circle.title = `Halten (${breathSettings.holdAfter}s)`; }
         phase = (phase + 1) % 4;
-      }, 4000);
+      }, Math.min(...timings.filter(t => t > 0)) || 4000);
     }
     function stopBreathing(){ if(breathInterval){ clearInterval(breathInterval); breathInterval=null; const circle = document.getElementById('breathCircle'); if(circle) circle.style.transform='scale(1)'; } }
 
@@ -1371,7 +1591,7 @@
         iqScores.slice(0,5).forEach(e=>{
           const li = document.createElement('li');
           const flag = langFlags[e.lang] || '🏳️';
-          li.innerHTML = `<img src="icons/icon-152x152.png" style="width:18px;height:18px;border-radius:4px;vertical-align:middle;margin-right:.4rem"> <span style="margin-right:.4rem">${flag}</span> <strong>${e.score} / ${e.total}</strong> <span style="color:var(--muted); margin-left:.6rem">(${new Date(e.date).toLocaleDateString()})</span>`;
+          li.innerHTML = `<img loading="lazy" src="icons/icon-152x152.png" style="width:18px;height:18px;border-radius:4px;vertical-align:middle;margin-right:.4rem"> <span style="margin-right:.4rem">${flag}</span> <strong>${e.score} / ${e.total}</strong> <span style="color:var(--muted); margin-left:.6rem">(${new Date(e.date).toLocaleDateString()})</span>`;
           highscoreIQ.appendChild(li);
         });
         if(iqScores.length===0){
@@ -1391,7 +1611,7 @@
         psyScores.slice(0,5).forEach(e=>{
           const li = document.createElement('li');
           const flag = langFlags[e.lang] || '🏳️';
-          li.innerHTML = `<img src="icons/icon-152x152.png" style="width:18px;height:18px;border-radius:4px;vertical-align:middle;margin-right:.4rem"> <span style="margin-right:.4rem">${flag}</span> <strong>${e.level}</strong> <span style="color:var(--muted); margin-left:.6rem">(${e.score})</span> <span style="color:var(--muted); margin-left:.6rem">(${new Date(e.date).toLocaleDateString()})</span>`;
+          li.innerHTML = `<img loading="lazy" src="icons/icon-152x152.png" style="width:18px;height:18px;border-radius:4px;vertical-align:middle;margin-right:.4rem"> <span style="margin-right:.4rem">${flag}</span> <strong>${e.level}</strong> <span style="color:var(--muted); margin-left:.6rem">(${e.score})</span> <span style="color:var(--muted); margin-left:.6rem">(${new Date(e.date).toLocaleDateString()})</span>`;
           highscorePsy.appendChild(li);
         });
         if(psyScores.length===0){
@@ -1531,6 +1751,8 @@
     document.querySelectorAll('.category-select button').forEach(btn => {
       btn.addEventListener('click', () => {
         currentCategory = btn.getAttribute('data-category');
+        // reset any existing question set so we build a fresh shuffled set for this category
+        currentQuestionSet = null;
         iqIndex = 0;
         iqScore = 0;
         iqUserAnswers = [];
@@ -1551,7 +1773,9 @@
     const startBtn = document.getElementById('startBtn');
     startBtn.addEventListener('click',()=>{
       showScreen('iqTest');
-      iqIndex = 0; iqScore = 0; renderIQ();
+  // start fresh question set (shuffle) when starting a new test
+  currentQuestionSet = null;
+  iqIndex = 0; iqScore = 0; renderIQ(currentCategory);
       startBtn.disabled = true;
       startBtn.textContent = getLang()==='de' ? 'Läuft...' : 'Running...';
     });
@@ -1597,6 +1821,14 @@
     // Initialisieren
     setLang(getLang());
     renderPsy();
+    
+    // Initialize IndexedDB and migrate data if needed
+    initIndexedDB().then(() => {
+      migrateToIndexedDB().catch(e => console.log('IndexedDB init/migration skipped:', e));
+    }).catch(e => {
+      console.log('IndexedDB not available, using localStorage:', e);
+    });
+
     // Start auto-updating stats
     try{ 
       startStatsAutoUpdate();
@@ -1798,16 +2030,160 @@
       }
     }
 
-    // Export/Import Event Listeners
-    document.getElementById('exportData')?.addEventListener('click', exportUserData);
+    // =====================
+    // Settings Management
+    // =====================
+    const breathInhaleInput = document.getElementById('breathInhale');
+    const breathHoldInput = document.getElementById('breathHold');
+    const breathExhaleInput = document.getElementById('breathExhale');
+    const breathHoldAfterInput = document.getElementById('breathHoldAfter');
+
+    // Initialize breath settings from localStorage
+    function initBreathSettings() {
+      breathInhaleInput.value = breathSettings.inhale;
+      breathHoldInput.value = breathSettings.hold;
+      breathExhaleInput.value = breathSettings.exhale;
+      breathHoldAfterInput.value = breathSettings.holdAfter;
+      updateBreathDisplay();
+    }
+
+    function updateBreathDisplay() {
+      document.getElementById('breathInhaleValue').textContent = breathInhaleInput.value;
+      document.getElementById('breathHoldValue').textContent = breathHoldInput.value;
+      document.getElementById('breathExhaleValue').textContent = breathExhaleInput.value;
+      document.getElementById('breathHoldAfterValue').textContent = breathHoldAfterInput.value;
+      
+      breathSettings.inhale = parseInt(breathInhaleInput.value);
+      breathSettings.hold = parseInt(breathHoldInput.value);
+      breathSettings.exhale = parseInt(breathExhaleInput.value);
+      breathSettings.holdAfter = parseInt(breathHoldAfterInput.value);
+      
+      localStorage.setItem('breathInhale', breathSettings.inhale);
+      localStorage.setItem('breathHold', breathSettings.hold);
+      localStorage.setItem('breathExhale', breathSettings.exhale);
+      localStorage.setItem('breathHoldAfter', breathSettings.holdAfter);
+    }
+
+    // Event listeners for breath settings
+    [breathInhaleInput, breathHoldInput, breathExhaleInput, breathHoldAfterInput].forEach(input => {
+      input.addEventListener('change', updateBreathDisplay);
+      input.addEventListener('input', updateBreathDisplay);
+    });
+
+    document.getElementById('breathTestBtn')?.addEventListener('click', () => {
+      stopBreathing();
+      setTimeout(() => startBreathing(), 200);
+      const popup = document.createElement('div');
+      popup.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--card-bg);border:2px solid var(--accent);padding:2rem;border-radius:16px;z-index:10000;text-align:center;color:var(--text)';
+      popup.innerHTML = `
+        <p style="margin-top:0">Atemübung läuft...</p>
+        <button class="option small" onclick="stopBreathing();this.parentElement.remove()">Stopp</button>
+      `;
+      document.body.appendChild(popup);
+      setTimeout(() => {
+        if (popup.parentElement) {
+          stopBreathing();
+          popup.remove();
+        }
+      }, (breathSettings.inhale + breathSettings.hold + breathSettings.exhale + breathSettings.holdAfter) * 1000 * 3);
+    });
+
+    document.getElementById('breathResetBtn')?.addEventListener('click', () => {
+      breathSettings = { inhale: 4, hold: 4, exhale: 4, holdAfter: 0 };
+      localStorage.setItem('breathInhale', '4');
+      localStorage.setItem('breathHold', '4');
+      localStorage.setItem('breathExhale', '4');
+      localStorage.setItem('breathHoldAfter', '0');
+      initBreathSettings();
+    });
+
+    // Notification settings
+    const notifEnabled = document.getElementById('notifEnabled');
+    const notifTime = document.getElementById('notifTime');
+
+    if (notifEnabled) {
+      notifEnabled.checked = localStorage.getItem('notifEnabled') === '1';
+      notifTime.value = localStorage.getItem('notifTime') || '09:00';
+
+      notifEnabled.addEventListener('change', () => {
+        localStorage.setItem('notifEnabled', notifEnabled.checked ? '1' : '0');
+        if (notifEnabled.checked && 'Notification' in window) {
+          Notification.requestPermission();
+        }
+      });
+
+      notifTime.addEventListener('change', () => {
+        localStorage.setItem('notifTime', notifTime.value);
+      });
+    }
+
+    // Export data function
+    function exportUserData() {
+      getHistoryData().then(hist => {
+        const data = {
+          version: '2.0.0',
+          exportDate: new Date().toISOString(),
+          lang: getLang(),
+          theme: localStorage.getItem('theme'),
+          breathSettings,
+          history: hist
+        };
+
+        const json = JSON.stringify(data, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `iq-trainer-export-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    // Import data function
+    function importUserData(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (data.history && Array.isArray(data.history)) {
+            localStorage.setItem('history', JSON.stringify(data.history));
+            alert('Daten erfolgreich importiert!');
+            updateStatsDisplay();
+          } else {
+            alert('Ungültige Dateiformat.');
+          }
+        } catch (err) {
+          alert('Fehler beim Lesen der Datei: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    document.getElementById('exportDataBtn')?.addEventListener('click', exportUserData);
+    document.getElementById('importDataBtn')?.addEventListener('click', () => {
+      document.getElementById('importFile').click();
+    });
     document.getElementById('importFile')?.addEventListener('change', (e) => {
       if (e.target.files.length > 0) {
         importUserData(e.target.files[0]);
       }
     });
-    document.getElementById('importData')?.addEventListener('click', () => {
-      document.getElementById('importFile').click();
-    });
+
+    // Initialize settings UI
+    initBreathSettings();
+    
+    // Update storage info
+    const storageInfo = document.getElementById('storageInfo');
+    if (storageInfo && 'storage' in navigator && 'estimate' in navigator.storage) {
+      navigator.storage.estimate().then(({ usage, quota }) => {
+        const usedMB = (usage / 1024 / 1024).toFixed(2);
+        const quotaMB = (quota / 1024 / 1024).toFixed(2);
+        storageInfo.textContent = `${usedMB} MB / ${quotaMB} MB genutzt`;
+      });
+    }
 
     // Keyboard Navigation
     document.addEventListener('keydown', (e) => {
@@ -1854,4 +2230,6 @@
   </script>
 </body>
 </html>
+
+
 
