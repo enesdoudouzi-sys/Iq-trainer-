@@ -1,0 +1,31 @@
+{
+  "name": "iq-trainer-app",
+  "version": "2.0.0",
+  "description": "Daily IQ & Focus Trainer - Progressive Web App",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "start": "npx http-server . -p 8000 -c-1",
+    "build": "npm run test"
+  },
+  "keywords": [
+    "iq-test",
+    "cognitive-training",
+    "pwa",
+    "offline",
+    "meditation"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "http-server": "^14.1.1"
+  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "Firefox ESR"
+  ]
+}
